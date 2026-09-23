@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675">
+<rect width="1200" height="675" fill="#f8fafc"/>
+<text x="60" y="75" font-family="Arial" font-size="34" font-weight="700" fill="#0f172a">Chronological Forecast Results</text>
+<text x="60" y="112" font-family="Arial" font-size="19" fill="#64748b">The final 20% of sequence windows are evaluated in temporal order.</text>
+
+<rect x="60" y="180" width="650" height="360" rx="24" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="100" y="225" font-family="Arial" font-size="23" font-weight="700" fill="#1e40af">Observed vs forecast</text>
+<line x1="115" y1="480" x2="660" y2="480" stroke="#64748b" stroke-width="2"/>
+<polyline points="125,420 165,330 205,405 245,285 285,395 325,310 365,445 405,360 445,275 485,430 525,335 565,255 605,390 650,300" fill="none" stroke="#2563eb" stroke-width="5"/>
+<polyline points="125,440 165,360 205,390 245,325 285,375 325,340 365,410 405,375 445,315 485,405 525,350 565,300 605,370 650,325" fill="none" stroke="#16a34a" stroke-width="5" stroke-dasharray="10 7"/>
+<circle cx="150" cy="575" r="9" fill="#2563eb"/><text x="170" y="582" font-family="Arial" font-size="18" fill="#334155">observed</text>
+<circle cx="305" cy="575" r="9" fill="#16a34a"/><text x="325" y="582" font-family="Arial" font-size="18" fill="#334155">forecast</text>
+
+<rect x="760" y="180" width="375" height="360" rx="24" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="800" y="230" font-family="Arial" font-size="23" font-weight="700" fill="#0f172a">Forecast metrics</text>
+<text x="800" y="335" font-family="Arial" font-size="62" font-weight="700" fill="#0f172a">33.0651</text>
+<text x="800" y="372" font-family="Arial" font-size="22" fill="#475569">RMSE</text>
+<text x="800" y="455" font-family="Arial" font-size="62" font-weight="700" fill="#0f172a">23.1892</text>
+<text x="800" y="492" font-family="Arial" font-size="22" fill="#475569">MAE</text>
+
+<rect x="205" y="590" width="790" height="50" rx="16" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+<text x="600" y="622" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#9a3412">Current implementation standardizes using full-series statistics before the temporal split.</text>
+</svg>
