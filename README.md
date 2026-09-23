@@ -71,17 +71,12 @@ pytest
 
 CI checks model shapes, train-only preprocessing, baselines, and a one-epoch Transformer smoke run.
 
-## Engineering details
+## Why the baseline still matters
 
-- chronological evaluation
-- train-only normalization
-- two meaningful baselines
-- deterministic PyTorch seed and DataLoader generator
-- explicit `model.eval()` before inference
-- import-safe module
-- behavioural tests and GitHub Actions
-- generated plots separated from stable SVG portfolio graphics
+The Transformer does beat persistence, but it falls well short of Ridge. With only 228 training windows, that is a useful warning against equating architectural sophistication with better forecasting.
 
-## Limits
+The repo therefore treats the Transformer as one hypothesis among several, not as the default winner. The chronological split and train-only normalization keep the comparison honest.
 
-The series is small and nonstationary. Stronger work would add autoregressive statistical models, spectral/seasonal features, rolling-origin evaluation, repeated seeds, validation-based tuning, uncertainty intervals, and alternative forecast horizons.
+## What I would try next
+
+A deeper follow-up would add autoregressive statistical models, spectral or seasonal features, rolling-origin evaluation, repeated seeds, validation-based tuning, uncertainty intervals, and alternative forecast horizons. I would only increase Transformer capacity after establishing that the additional data and evaluation design can support it.
