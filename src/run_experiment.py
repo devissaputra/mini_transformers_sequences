@@ -1,16 +1,115 @@
 from pathlib import Path
-import json, numpy as np, matplotlib.pyplot as plt, torch, torch.nn as nn
-from torch.utils.data import TensorDataset,DataLoader
+import json
+import numpy as np
+import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+from torch.utils.data import TensorDataset, DataLoader
 from statsmodels.datasets import sunspots
-torch.manual_seed(42); torch.set_num_threads(1); d=sunspots.load_pandas().data; vals=d['SUNACTIVITY'].to_numpy(dtype='float32'); years=d['YEAR'].to_numpy(); mu,sd=float(vals.mean()),float(vals.std()); z=(vals-mu)/sd; L=24; X=np.array([z[i:i+L] for i in range(len(z)-L)],dtype='float32'); y=np.array([z[i+L] for i in range(len(z)-L)],dtype='float32'); c=int(.8*len(X)); dl=DataLoader(TensorDataset(torch.tensor(X[:c]),torch.tensor(y[:c])),32,shuffle=False)
-class M(nn.Module):
- def __init__(self):
-  super().__init__(); dim=24; self.proj=nn.Linear(1,dim); self.pos=nn.Parameter(torch.randn(1,L,dim)*.02); layer=nn.TransformerEncoderLayer(dim,4,48,batch_first=True,dropout=.1); self.enc=nn.TransformerEncoder(layer,1); self.fc=nn.Linear(dim,1)
- def forward(self,x): z=self.proj(x.unsqueeze(-1))+self.pos; z=self.enc(z); return self.fc(z[:,-1]).squeeze(-1)
-m=M(); opt=torch.optim.Adam(m.parameters(),lr=.002); lf=nn.MSELoss(); losses=[]
+
+torch.manual_seed(42)
+torch.set_num_threads(1)
+
+data = sunspots.load_pandas().data
+values = data["SUNACTIVITY"].to_numpy(dtype="float32")
+years = data["YEAR"].to_numpy()
+
+window = 24
+n_windows = len(values) - window
+split = int(0.8 * n_windows)
+
+# Fit normalization only on values that belong to the training period.
+train_end = split + window
+train_mean = float(values[:train_end].mean())
+train_std = float(values[:train_end].std())
+scaled = (values - train_mean) / train_std
+
+X = np.array(
+    [scaled[i:i + window] for i in range(n_windows)],
+    dtype="float32",
+)
+y = np.array(
+    [scaled[i + window] for i in range(n_windows)],
+    dtype="float32",
+)
+
+train_loader = DataLoader(
+    TensorDataset(torch.tensor(X[:split]), torch.tensor(y[:split])),
+    batch_size=32,
+    shuffle=False,
+)
+
+class TransformerForecaster(nn.Module):
+    def __init__(self):
+        super().__init__()
+        dim = 24
+        self.projection = nn.Linear(1, dim)
+        self.position = nn.Parameter(torch.randn(1, window, dim) * 0.02)
+        layer = nn.TransformerEncoderLayer(
+            d_model=dim,
+            nhead=4,
+            dim_feedforward=48,
+            batch_first=True,
+            dropout=0.1,
+        )
+        self.encoder = nn.TransformerEncoder(layer, num_layers=1)
+        self.head = nn.Linear(dim, 1)
+
+    def forward(self, x):
+        z = self.projection(x.unsqueeze(-1)) + self.position
+        z = self.encoder(z)
+        return self.head(z[:, -1]).squeeze(-1)
+
+model = TransformerForecaster()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.002)
+loss_fn = nn.MSELoss()
+
+losses = []
 for _ in range(24):
- ls=[]
- for xb,yb in dl: opt.zero_grad(); loss=lf(m(xb),yb); loss.backward(); opt.step(); ls.append(loss.item())
- losses.append(float(np.mean(ls)))
-with torch.no_grad(): p=m(torch.tensor(X[c:])).numpy()*sd+mu; truth=y[c:]*sd+mu
-out={'rmse':float(np.sqrt(np.mean((p-truth)**2))),'mae':float(np.mean(np.abs(p-truth))),'window_years':L,'n_windows':int(len(X))}; Path('results').mkdir(exist_ok=True); Path('results/metrics.json').write_text(json.dumps(out,indent=2)); plt.figure(figsize=(9,5)); plt.plot(years,vals); plt.xlabel('Year'); plt.ylabel('Sunspot activity'); plt.title('Real historical sunspot series'); plt.tight_layout(); plt.savefig('assets/03_data_or_model.png',dpi=150); plt.close(); plt.figure(figsize=(9,5)); plt.plot(truth,label='observed'); plt.plot(p,label='forecast'); plt.xlabel('Held-out step'); plt.ylabel('Sunspot activity'); plt.title('Transformer chronological forecast'); plt.legend(); plt.tight_layout(); plt.savefig('assets/04_evaluation_or_results.png',dpi=150); plt.close(); print(json.dumps(out,indent=2))
+    batch_losses = []
+    for xb, yb in train_loader:
+        optimizer.zero_grad()
+        loss = loss_fn(model(xb), yb)
+        loss.backward()
+        optimizer.step()
+        batch_losses.append(loss.item())
+    losses.append(float(np.mean(batch_losses)))
+
+with torch.no_grad():
+    forecast = model(torch.tensor(X[split:])).numpy()
+    forecast = forecast * train_std + train_mean
+    observed = y[split:] * train_std + train_mean
+
+results = {
+    "rmse": float(np.sqrt(np.mean((forecast - observed) ** 2))),
+    "mae": float(np.mean(np.abs(forecast - observed))),
+    "window_years": window,
+    "n_windows": int(n_windows),
+    "train_windows": int(split),
+    "test_windows": int(n_windows - split),
+}
+
+Path("results").mkdir(exist_ok=True)
+Path("results/metrics.json").write_text(json.dumps(results, indent=2))
+
+plt.figure(figsize=(9, 5))
+plt.plot(years, values)
+plt.xlabel("Year")
+plt.ylabel("Sunspot activity")
+plt.title("Historical sunspot series")
+plt.tight_layout()
+plt.savefig("assets/03_data_or_model.png", dpi=150)
+plt.close()
+
+plt.figure(figsize=(9, 5))
+plt.plot(observed, label="observed")
+plt.plot(forecast, label="forecast")
+plt.xlabel("Held-out step")
+plt.ylabel("Sunspot activity")
+plt.title("Transformer chronological forecast")
+plt.legend()
+plt.tight_layout()
+plt.savefig("assets/04_evaluation_or_results.png", dpi=150)
+plt.close()
+
+print(json.dumps(results, indent=2))
