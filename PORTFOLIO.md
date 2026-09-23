@@ -1,22 +1,19 @@
-# Web Portfolio Entry — Transformer for Real Temporal Sequences
+# Portfolio Summary
 
-**Track:** AI Engineering  
-**Difficulty:** ★★★★★  
-**Dataset:** Sunspots dataset via statsmodels
+## Transformer Forecasting for Sunspot Activity
 
-Train a compact Transformer encoder to forecast real yearly sunspot activity from 24-year historical windows.
+I use a compact Transformer encoder to forecast the next yearly sunspot value from the previous 24 years.
 
-## Four-image gallery
+The model uses 24-dimensional token embeddings, learned positions, four attention heads, and one encoder layer. The split is chronological and normalization is fitted on the training period only.
 
-![Cover](assets/01_cover.svg)
+### Images
 
-![Transformer forecasting pipeline](assets/02_data_pipeline.svg)
+![Project overview](assets/01_cover.svg)
 
-![Mini Transformer architecture](assets/03_data_or_model.svg)
+![Forecasting pipeline](assets/02_data_pipeline.svg)
 
-![Chronological forecast results](assets/04_evaluation_or_results.svg)
+![Transformer architecture](assets/03_data_or_model.svg)
 
-**Skills:** Transformers, self-attention, temporal forecasting, PyTorch, positional embeddings
+![Chronological evaluation](assets/04_evaluation_or_results.svg)
 
-### Portfolio copy
-This project applies a compact Transformer encoder to real yearly sunspot data. Each 24-year sequence is projected into 24-dimensional tokens, augmented with learned positional embeddings, processed by a four-head self-attention layer, and used to forecast the next annual observation. The current implementation reaches RMSE 33.07 and MAE 23.19 on a chronological hold-out split and explicitly documents the need to move normalization statistics to the training period only in a stricter version.
+**Key result:** RMSE 33.2499 and MAE 23.8058 on 57 held-out windows after the preprocessing fix.
