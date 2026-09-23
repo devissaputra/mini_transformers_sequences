@@ -1,19 +1,9 @@
-# Portfolio Summary
+# Transformer Forecasting for Sunspot Activity
 
-## Transformer Forecasting for Sunspot Activity
+**Focus:** testing whether self-attention earns its complexity on a small time series.
 
-I use a compact Transformer encoder to forecast the next yearly sunspot value from the previous 24 years.
+A one-layer Transformer forecasts next-year sunspot activity from the previous 24 years and is evaluated against persistence and Ridge autoregression on a chronological hold-out set. Normalization is fitted only on the training period.
 
-The model uses 24-dimensional token embeddings, learned positions, four attention heads, and one encoder layer. The split is chronological and normalization is fitted on the training period only.
+The Transformer improves modestly over persistence: RMSE 31.8124 versus 33.0187. Ridge is substantially better at 19.2463. With only 228 training windows, the linear autoregressive model is the clear choice in this configuration.
 
-### Images
-
-![Project overview](assets/01_cover.svg)
-
-![Forecasting pipeline](assets/02_data_pipeline.svg)
-
-![Transformer architecture](assets/03_data_or_model.svg)
-
-![Chronological evaluation](assets/04_evaluation_or_results.svg)
-
-**Key result:** RMSE 33.2499 and MAE 23.8058 on 57 held-out windows after the preprocessing fix.
+The repository includes deterministic PyTorch training, strong baselines, behavioural tests, CI, reproducibility notes, and generated diagnostics.
