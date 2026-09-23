@@ -1,6 +1,6 @@
 # Quick Description
 
-Train a compact Transformer encoder to forecast real yearly sunspot activity from historical windows.
+I use a compact Transformer encoder to forecast yearly sunspot activity from 24 years of history. The model uses learned positional embeddings, four attention heads, and a chronological hold-out split.
 
-**Difficulty:** ★★★★★  
-**Dataset:** Sunspots dataset via statsmodels
+**Dataset:** statsmodels Sunspots  
+**Main ideas:** Transformers, self-attention, positional embeddings, time-series forecasting
