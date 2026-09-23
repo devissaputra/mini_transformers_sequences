@@ -1,67 +1,59 @@
 # Transformer Forecasting for Sunspot Activity
 
+[![CI](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml)
+
 ![Project overview](assets/01_cover.svg)
 
-I built this project to test whether a small Transformer can handle a real time-series forecasting problem without using a recurrent network.
+A small Transformer time-series experiment evaluated against baselines strong enough to challenge it.
 
-The task is to use the previous 24 yearly sunspot observations to predict the next year.
+> **Does self-attention improve next-year sunspot forecasting over persistence and linear autoregression?**
 
-## Data
+## Data and evaluation
 
-I use the historical sunspot dataset distributed with statsmodels.
+The project uses the historical yearly sunspot series distributed with statsmodels.
 
-The sequence construction produces:
+- 24 previous years → next-year target
+- 285 windows
+- first 228 windows for training
+- final 57 windows for testing
+- chronological split
+- normalization fitted only on the training period
 
-- 285 total windows;
-- 228 training windows;
-- 57 held-out windows;
-- 24 years of history per input;
-- one next-year target.
-
-The split is chronological. Normalization is fitted on the training period only and then applied to the later hold-out period.
-
-## How the model works
+## Models
 
 ![Forecasting pipeline](assets/02_data_pipeline.svg)
 
-Each scalar sunspot value is projected into a 24-dimensional representation. I add a learned positional embedding so the model can distinguish one year in the input window from another.
+1. **Persistence:** next year = most recent year.
+2. **Ridge autoregression:** linear prediction from the 24-year lag window.
+3. **Transformer encoder:** learned scalar projection + positional embedding + one encoder layer.
 
-The encoder uses:
+Transformer configuration:
 
-- model dimension 24;
-- 4 attention heads;
-- feed-forward width 48;
-- 1 encoder layer;
-- dropout 0.1.
+- model dimension: 24
+- attention heads: 4
+- feed-forward width: 48
+- encoder layers: 1
+- dropout: 0.1
+- Adam learning rate: 0.002
+- 24 epochs
 
-The final token representation is passed through a linear layer to produce the next-year forecast.
-
-## Transformer structure
+## Recorded results
 
 ![Transformer architecture](assets/03_data_or_model.svg)
 
-Unlike the LSTM in the previous project, self-attention allows each position in the 24-year input window to compare directly with every other position.
-
-This does not automatically make the Transformer better. With only a few hundred windows, model size and validation design matter a lot.
-
-## Results
+| Model | RMSE ↓ | MAE ↓ |
+|---|---:|---:|
+| Persistence | 33.0187 | 25.1982 |
+| **Ridge** | **19.2463** | **14.1705** |
+| Transformer | 31.8124 | 23.5226 |
 
 ![Chronological evaluation](assets/04_evaluation_or_results.svg)
 
-After correcting preprocessing so normalization uses the training period only, the recorded run produced:
+The Transformer improves modestly over persistence, but the much simpler Ridge model is substantially better. With only 228 training windows, the attention model does not earn its extra complexity.
 
-| Metric | Result |
-|---|---:|
-| RMSE | 33.2499 |
-| MAE | 23.8058 |
-| Training windows | 228 |
-| Test windows | 57 |
+That is the main result of the repo.
 
-These errors are fairly large, which is useful information rather than something to hide. The series is small and strongly variable, so a Transformer is not automatically the right tool.
-
-A serious follow-up should compare this result against simple baselines, autoregressive models, and the LSTM project using the same evaluation window.
-
-## Run it
+## Run
 
 ```bash
 python -m venv .venv
@@ -70,10 +62,26 @@ pip install -r requirements.txt
 python src/run_experiment.py
 ```
 
-On Windows, use `.venv\Scripts\activate`.
+## Test
 
-## Repository notes
+```bash
+pip install pytest
+pytest
+```
 
-- [DATA.md](DATA.md) explains the sunspot series.
-- [REPRODUCIBILITY.md](REPRODUCIBILITY.md) explains the temporal split and rerun steps.
-- [paper/paper.md](paper/paper.md) contains the longer technical write-up.
+CI checks model shapes, train-only preprocessing, baselines, and a one-epoch Transformer smoke run.
+
+## Engineering details
+
+- chronological evaluation
+- train-only normalization
+- two meaningful baselines
+- deterministic PyTorch seed and DataLoader generator
+- explicit `model.eval()` before inference
+- import-safe module
+- behavioural tests and GitHub Actions
+- generated plots separated from stable SVG portfolio graphics
+
+## Limits
+
+The series is small and nonstationary. Stronger work would add autoregressive statistical models, spectral/seasonal features, rolling-origin evaluation, repeated seeds, validation-based tuning, uncertainty intervals, and alternative forecast horizons.

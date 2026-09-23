@@ -1,33 +1,24 @@
-\documentclass[11pt]{article}
+\documentclass{article}
+\usepackage{booktabs}
 \usepackage[margin=1in]{geometry}
-\usepackage{hyperref}
 \title{Transformer Forecasting for Sunspot Activity}
 \author{Devis W. Saputra}
+\date{}
 \begin{document}
 \maketitle
-
 \begin{abstract}
-I use a compact Transformer encoder to forecast the next yearly sunspot value from 24 years of history. The split is chronological and normalization is fitted on the training period only.
+A compact Transformer is evaluated against persistence and Ridge autoregression for chronological next-year sunspot forecasting.
 \end{abstract}
-
-\section{Question}
-Can self-attention model useful structure in a small historical sunspot series?
-
-\section{Data and Method}
-The series produces 285 windows. I train on the first 228 and hold out the final 57. Each scalar input is projected to 24 dimensions and combined with a learned positional embedding. The encoder uses four attention heads, feed-forward width 48, one layer, and dropout 0.1.
-
-\section{Training}
-The model trains for 24 epochs with Adam at learning rate 0.002 and mean-squared error loss.
-
 \section{Results}
-After fitting normalization on the training period only, the recorded hold-out RMSE is 33.2499 and MAE is 23.8058.
-
-\section{Limitations}
-The dataset is small for a Transformer and the repository does not yet include simple forecasting baselines. Model complexity should not be mistaken for forecasting quality.
-
-\section{Reproduction}
-Install \texttt{requirements.txt} and run \texttt{python src/run\_experiment.py}.
-
-\bibliographystyle{plain}
-\bibliography{references}
+\begin{tabular}{lrr}
+\toprule
+Model & RMSE & MAE \\
+\midrule
+Persistence & 33.0187 & 25.1982 \\
+Ridge & 19.2463 & 14.1705 \\
+Transformer & 31.8124 & 23.5226 \\
+\bottomrule
+\end{tabular}
+\section{Interpretation}
+The Transformer improves slightly over persistence but is substantially worse than Ridge in this recorded experiment.
 \end{document}

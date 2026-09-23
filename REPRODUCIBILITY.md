@@ -1,6 +1,4 @@
-# Reproducing the Experiment
-
-Run:
+# Reproducing the experiment
 
 ```bash
 python -m venv .venv
@@ -9,12 +7,10 @@ pip install -r requirements.txt
 python src/run_experiment.py
 ```
 
-The script sets the PyTorch seed to 42 and uses one CPU thread.
+The yearly sunspot series is converted into 24-year windows and split chronologically: 228 training windows followed by 57 test windows. Normalization is fitted only on observations available by the end of the training period.
 
-The yearly sunspot series is converted into 24-year windows and split chronologically: 80% for training and 20% for evaluation.
+The full experiment compares persistence, Ridge autoregression, and a one-layer Transformer trained for 24 epochs. PyTorch uses seed 42, one CPU thread, and a seeded DataLoader generator.
 
-Normalization is fitted only on the training period and then applied unchanged to the hold-out period.
+Outputs are written to `results/metrics.json` and `results/figures/`.
 
-The Transformer trains for 24 epochs with Adam at learning rate 0.002.
-
-Results are saved to `results/metrics.json`. PyTorch versions can produce small numerical differences, so record the package versions if exact comparison matters.
+CI runs a one-epoch smoke test plus preprocessing and model-shape tests. Exact Transformer values may move slightly across PyTorch builds.

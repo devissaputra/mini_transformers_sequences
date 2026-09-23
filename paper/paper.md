@@ -1,57 +1,25 @@
 # Transformer Forecasting for Sunspot Activity
 
-## Question
+## Abstract
 
-Can a small Transformer encoder forecast the next yearly sunspot value from the previous 24 years?
-
-## Data
-
-I use the yearly sunspot series from statsmodels.
-
-The series produces 285 sliding windows. I use the first 228 for training and the final 57 for chronological hold-out evaluation.
-
-Normalization statistics are fitted on the training period only.
+This experiment evaluates a compact Transformer against persistence and Ridge autoregression for next-year sunspot forecasting. The data are split chronologically and normalization is fitted only on the training period.
 
 ## Method
 
-Each scalar observation is projected into 24 dimensions and combined with a learned positional embedding.
-
-The encoder uses:
-
-- model dimension 24;
-- 4 attention heads;
-- feed-forward width 48;
-- 1 encoder layer;
-- dropout 0.1.
-
-The final token representation is mapped to one forecast value.
-
-Training uses Adam with learning rate 0.002, mean-squared error loss, batch size 32, and 24 epochs.
+Twenty-four prior annual observations predict the next year. The experiment contains 285 windows, with 228 used for training and 57 held out for evaluation. The Transformer uses a 24-dimensional representation, four attention heads, one encoder layer, and a 48-unit feed-forward block.
 
 ## Results
 
-After correcting normalization to use the training period only, the recorded run produced:
-
-| Metric | Result |
-|---|---:|
-| RMSE | 33.2499 |
-| MAE | 23.8058 |
+| Model | RMSE | MAE |
+|---|---:|---:|
+| Persistence | 33.0187 | 25.1982 |
+| Ridge | 19.2463 | 14.1705 |
+| Transformer | 31.8124 | 23.5226 |
 
 ## Interpretation
 
-The error is substantial. I consider that an important result, because a more complex model does not automatically make a better forecaster.
-
-The dataset is small, and a Transformer has many ways to spend model capacity. Before changing the architecture, I would compare it with simple baselines and the LSTM project using exactly the same hold-out period.
+The Transformer modestly improves over persistence but is substantially worse than Ridge. With only a few hundred sequence windows, self-attention does not justify its added complexity in this configuration.
 
 ## Limitations
 
-The experiment uses one historical series and one chronological split. There is no baseline model in the current repository, and the sample size is small for a Transformer.
-
-A stronger version would add rolling-origin evaluation, simple and autoregressive baselines, several random seeds, and an attention analysis to see what years the model focuses on.
-
-## Reproduce
-
-```bash
-pip install -r requirements.txt
-python src/run_experiment.py
-```
+The study uses one series, one hold-out period, and one Transformer configuration. Rolling-origin evaluation, stronger statistical baselines, repeated seeds, uncertainty estimates, and validation-based tuning are needed for stronger conclusions.
