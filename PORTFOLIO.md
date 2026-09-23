@@ -4,15 +4,19 @@
 **Difficulty:** ★★★★★  
 **Dataset:** Sunspots dataset via statsmodels
 
-Train a compact Transformer encoder to forecast real yearly sunspot activity from historical windows.
+Train a compact Transformer encoder to forecast real yearly sunspot activity from 24-year historical windows.
 
 ## Four-image gallery
-![Cover](assets/01_cover.png)
 
-![Pipeline](assets/02_data_pipeline.png)
+![Cover](assets/01_cover.svg)
 
-![Data / model](assets/03_data_or_model.png)
+![Transformer forecasting pipeline](assets/02_data_pipeline.svg)
 
-![Evaluation / results](assets/04_evaluation_or_results.png)
+![Mini Transformer architecture](assets/03_data_or_model.svg)
 
-**Skills:** Transformers, self-attention, time series, PyTorch
+![Chronological forecast results](assets/04_evaluation_or_results.svg)
+
+**Skills:** Transformers, self-attention, temporal forecasting, PyTorch, positional embeddings
+
+### Portfolio copy
+This project applies a compact Transformer encoder to real yearly sunspot data. Each 24-year sequence is projected into 24-dimensional tokens, augmented with learned positional embeddings, processed by a four-head self-attention layer, and used to forecast the next annual observation. The current implementation reaches RMSE 33.07 and MAE 23.19 on a chronological hold-out split and explicitly documents the need to move normalization statistics to the training period only in a stricter version.
