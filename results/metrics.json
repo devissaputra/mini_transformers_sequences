@@ -1,6 +1,8 @@
 {
-  "rmse": 33.0650634765625,
-  "mae": 23.189212799072266,
+  "rmse": 33.2498893737793,
+  "mae": 23.805849075317383,
   "window_years": 24,
-  "n_windows": 285
+  "n_windows": 285,
+  "train_windows": 228,
+  "test_windows": 57
 }
