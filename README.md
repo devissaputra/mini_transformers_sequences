@@ -1,34 +1,68 @@
 # 10. Transformer for Real Temporal Sequences ★★★★★
 
-![Cover](./assets/01_cover.png)
+![Cover](assets/01_cover.svg)
 
-> **Quick description:** Train a compact Transformer encoder to forecast real yearly sunspot activity from historical windows.
+> **Quick description:** Train a compact Transformer encoder to forecast real yearly sunspot activity from 24-year historical windows.
 
 ## Why this project matters
-Professor-readable AI Engineering evidence using **real data**, explicit processing, executable code, empirical or reproducible evaluation, and a scientific-style report. Core skills: **Transformers, self-attention, time series, PyTorch**.
+This AI Engineering project tests self-attention on a real temporal forecasting task. Instead of recurrently processing history one step at a time, the Transformer can compare all positions within a 24-year context window through multi-head attention.
+
+The experiment uses the real **Sunspots dataset** from statsmodels, constructs 24-year input windows, adds learned positional embeddings, processes the sequence through a compact Transformer encoder, and predicts the next annual sunspot value.
 
 ## Dataset
 - **Dataset:** Sunspots dataset via statsmodels
-- **Reference:** https://www.statsmodels.org/stable/datasets/generated/sunspots.html
-- See [`DATA.md`](DATA.md).
+- **Frequency:** yearly
+- **Input window:** 24 historical years
+- **Forecast horizon:** next yearly observation
+- **Number of windows:** 285
+- **Data provenance and usage:** [DATA.md](DATA.md)
 
 ## Processing pipeline
-![Pipeline](./assets/02_data_pipeline.png)
+![Transformer forecasting pipeline](assets/02_data_pipeline.svg)
 
-## Evidence gallery
-| Data / model | Evaluation / results |
-|---|---|
-| ![Model](./assets/03_data_or_model.png) | ![Results](./assets/04_evaluation_or_results.png) |
+### Processing steps
+1. Load the historical yearly sunspot series.
+2. Standardize the activity values.
+3. Convert the time series into 24-year input windows and one-step-ahead targets.
+4. Use the first 80% of windows for training and the final 20% for chronological hold-out evaluation.
+5. Project each scalar observation from 1 dimension to a 24-dimensional token embedding.
+6. Add a learned positional embedding for the 24 sequence positions.
+7. Process the sequence through one Transformer encoder layer.
+8. Use the final token representation to predict the next annual sunspot value.
 
-## Reproduce
-```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python src/run_experiment.py
+## Transformer architecture
+![Mini Transformer architecture](assets/03_data_or_model.svg)
+
+The implemented model is:
+
+```text
+24 yearly scalar observations
+          ↓
+Linear projection: 1 → 24
+          +
+learned positional embeddings
+          ↓
+Transformer Encoder
+  model dimension = 24
+  attention heads = 4
+  feed-forward width = 48
+  encoder layers = 1
+  dropout = 0.1
+          ↓
+final token representation
+          ↓
+Linear: 24 → 1
+          ↓
+next-year sunspot forecast
 ```
 
-## Generated metrics
+Training uses Adam with learning rate `0.002`, mean-squared error loss, batch size 32, and **24 epochs**.
+
+## Chronological forecast results
+![Chronological forecast results](assets/04_evaluation_or_results.svg)
+
+Generated metrics from the included experiment:
+
 ```json
 {
   "rmse": 33.0650634765625,
@@ -38,11 +72,38 @@ python src/run_experiment.py
 }
 ```
 
-## Documentation
-[`paper/paper.md`](paper/paper.md) · [`PORTFOLIO.md`](PORTFOLIO.md) · [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) · [`ETHICS.md`](ETHICS.md) · [`CITATION.cff`](CITATION.cff)
+### Interpretation
+- **RMSE = 33.0651** penalizes larger forecasting misses more heavily.
+- **MAE = 23.1892** represents the mean absolute forecasting error in the original sunspot-activity scale.
+- The model is trained on the first 80% of sequence windows and evaluated on the final 20% in chronological order.
+- Self-attention gives the model a way to compare distant years within the 24-year context window directly rather than only through recurrent state propagation.
+
+### Methodological limitation
+The current implementation computes the mean and standard deviation from the **full series before the temporal split**. That leaks aggregate information from the hold-out period into preprocessing. A stricter experiment should calculate normalization statistics on the training period only, then apply those fixed statistics to the chronological hold-out data.
+
+## Reproduce
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python src/run_experiment.py
+```
+
+Metrics are written to `results/metrics.json`.
+
+## Research documentation
+- [Scientific-style technical report](paper/paper.md)
+- [Website-ready portfolio entry](PORTFOLIO.md)
+- [Data provenance](DATA.md)
+- [Reproducibility notes](REPRODUCIBILITY.md)
+- [Ethics and responsible use](ETHICS.md)
+- [Citation metadata](CITATION.cff)
 
 ## Difficulty
-**★★★★★**
+**★★★★★ — advanced**
 
-## Integrity
-This is a research portfolio report, not a peer-reviewed publication. Numerical claims should match `results/metrics.json` generated by the included code.
+## Academic integrity
+This repository is a research portfolio artifact, not a peer-reviewed publication. Reported metrics are generated by the included code on the stated real dataset.
+
+## Stronger research extension
+A stronger research version would fit normalization only on the training interval, compare against naive, autoregressive, LSTM, and seasonal baselines, add rolling-origin evaluation, test longer and shorter context windows, inspect attention patterns, tune model width and head count, and report uncertainty across random seeds.
