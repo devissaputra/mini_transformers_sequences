@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Please cite this repository and the original dataset source."
+title: "Transformer for Real Temporal Sequences"
+type: software
+authors:
+  - family-names: "Saputra"
+    given-names: "Devis W."
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/devissaputra/REPLACE-WITH-REPOSITORY-NAME"
