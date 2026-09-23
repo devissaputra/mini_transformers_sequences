@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml)
 
+
+**Category:** AI Engineering
 ![Project overview](assets/01_cover.svg)
 
 A small Transformer time-series experiment evaluated against baselines strong enough to challenge it.
