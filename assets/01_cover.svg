@@ -8,5 +8,5 @@
 <rect x="635" y="325" width="245" height="115" rx="18" fill="#faf5ff"/><text x="662" y="367" font-family="Arial" font-size="20" fill="#7e22ce" font-weight="700">ENCODER</text><text x="662" y="404" font-family="Arial" font-size="20" fill="#334155">1 layer • FFN 48</text>
 <rect x="910" y="325" width="205" height="115" rx="18" fill="#f0fdf4"/><text x="937" y="367" font-family="Arial" font-size="20" fill="#15803d" font-weight="700">TRAINING</text><text x="937" y="404" font-family="Arial" font-size="20" fill="#334155">24 epochs</text>
 <text x="85" y="535" font-family="Arial" font-size="23" fill="#334155">Research question</text>
-<text x="85" y="575" font-family="Arial" font-size="25" fill="#0f172a" font-weight="600">Can self-attention model long-range temporal structure in yearly sunspot activity?</text>
+<text x="85" y="575" font-family="Arial" font-size="25" fill="#0f172a" font-weight="600">Does self-attention improve next-year sunspot forecasting over simpler baselines?</text>
 </svg>
