@@ -392,7 +392,7 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
     forecasts["hist_gradient_boosting"] = hgb.predict(X_test) * std + mean
 
     transformer_seeds = (PRIMARY_SEED,) if quick else TRANSFORMER_SEEDS
-    transformer_runs, transformer_primary, primary_history = {}, None, []
+    transformer_runs, transformer_predictions, transformer_primary, primary_history = {}, {}, None, []
     for seed in transformer_seeds:
         model, history, best_epoch = train_transformer(
             X_train, y_train, X_val, y_val, max_epochs=max_epochs, seed=seed
@@ -401,6 +401,7 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
         with torch.no_grad():
             pred = model(torch.tensor(X_test)).cpu().numpy() * std + mean
         transformer_runs[str(seed)] = {"metrics": error_metrics(observed, pred), "best_epoch": int(best_epoch)}
+        transformer_predictions[str(seed)] = pred
         if seed == PRIMARY_SEED:
             transformer_primary = pred
             primary_history = history
@@ -422,6 +423,25 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
         baseline: moving_block_bootstrap_mae_delta(observed, transformer_primary, forecasts[baseline])
         for baseline in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting")
     }
+    uncertainty_all_seeds = {}
+    for baseline in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"):
+        per_seed = {
+            seed: moving_block_bootstrap_mae_delta(
+                observed, pred, forecasts[baseline], seed=20260925 + int(seed)
+            )
+            for seed, pred in transformer_predictions.items()
+        }
+        seed_deltas = np.asarray(
+            [d["mean_mae_delta_a_minus_b"] for d in per_seed.values()], dtype=float
+        )
+        uncertainty_all_seeds[baseline] = {
+            "per_seed": per_seed,
+            "mean_delta_across_seeds": float(seed_deltas.mean()),
+            "std_delta_across_seeds": float(seed_deltas.std(ddof=1)) if len(seed_deltas) > 1 else 0.0,
+            "seeds_favoring_transformer": int((seed_deltas < 0).sum()),
+            "n_seeds": int(len(seed_deltas)),
+            "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference.",
+        }
     activity = activity_error_analysis(observed, forecasts, values[:train_raw_end])
     target_dates = pd.Series(dates).iloc[split["target_indices_test"]].dt.strftime("%Y-%m").tolist()
     midpoint = len(observed) // 2
@@ -440,6 +460,7 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
             "hist_gradient_boosting": hgb_selection,
         },
         "transformer_vs_baseline_uncertainty": uncertainty,
+        "transformer_vs_baseline_uncertainty_all_seeds": uncertainty_all_seeds,
         "activity_error_analysis": activity,
         "era_robustness": era,
         "training_history_seed_42": primary_history,
@@ -570,6 +591,28 @@ def build_results_latex(results: dict) -> str:
         f"{bs}begin{{table}}[htbp]",
         f"{bs}centering",
         f"{bs}small",
+        f"{bs}begin{{tabular}}{{rrr}}",
+        f"{bs}toprule",
+        "Horizon & Comparator & Mean $\\Delta$MAE across Transformer seeds " + row_end,
+        f"{bs}midrule",
+    ]
+    for horizon, row in results["horizons"].items():
+        for key in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"):
+            d = row["transformer_vs_baseline_uncertainty_all_seeds"][key]
+            lines.append(
+                f"{horizon} & {comparator_labels[key]} & "
+                f"{d['mean_delta_across_seeds']:.3f} $\\pm$ {d['std_delta_across_seeds']:.3f} "
+                f"({d['seeds_favoring_transformer']}/{d['n_seeds']} seeds favor Transformer) " + row_end
+            )
+    lines += [
+        f"{bs}bottomrule",
+        f"{bs}end{{tabular}}",
+        f"{bs}caption{{Optimization-seed robustness of Transformer-minus-baseline MAE.}}",
+        f"{bs}end{{table}}",
+        "",
+        f"{bs}begin{{table}}[htbp]",
+        f"{bs}centering",
+        f"{bs}small",
         f"{bs}begin{{tabular}}{{rrrrr}}",
         f"{bs}toprule",
         "Context & Ridge $\\alpha$ & Ridge MAE & Transformer MAE & Transformer best epoch " + row_end,
@@ -635,6 +678,20 @@ def write_summary(results: dict, path: Path) -> None:
             lo, hi = d["moving_block_bootstrap_95_interval"]
             cells.append(f"{d['mean_mae_delta_a_minus_b']:.3f} [{lo:.3f}, {hi:.3f}]")
         lines.append(f"| {horizon} | {cells[0]} | {cells[1]} | {cells[2]} | {cells[3]} |")
+
+    lines += ["", "## All-seed Transformer-vs-baseline robustness", "",
+        "Negative mean deltas favor the Transformer; the seed-count column shows how often that direction appears across seeds.", "",
+        "| Horizon | Comparator | Mean MAE delta across seeds | SD across seeds | Seeds favoring Transformer |",
+        "|---:|---|---:|---:|---:|",
+    ]
+    for horizon, row in results["horizons"].items():
+        u = row["transformer_vs_baseline_uncertainty_all_seeds"]
+        for name in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"):
+            d = u[name]
+            lines.append(
+                f"| {horizon} | {name} | {d['mean_delta_across_seeds']:.3f} | "
+                f"{d['std_delta_across_seeds']:.3f} | {d['seeds_favoring_transformer']}/{d['n_seeds']} |"
+            )
 
     lines += ["", "## Activity and test-era checks", "",
         "| Horizon | Transformer high-activity MAE | HGB high-activity MAE | Transformer early MAE | Transformer late MAE | HGB early MAE | HGB late MAE |",
