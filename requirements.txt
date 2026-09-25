@@ -1,1 +1,5 @@
-numpy>=1.26,<3\npandas>=2.2,<3\nmatplotlib>=3.8,<4\nscikit-learn>=1.5,<2\ntorch>=2.2,<3\n
+numpy>=1.26,<3
+pandas>=2.2,<3
+matplotlib>=3.8,<4
+scikit-learn>=1.5,<2
+torch>=2.2,<3
