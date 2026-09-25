@@ -1,1 +1,8 @@
-__pycache__/\n*.py[cod]\n.pytest_cache/\n.venv/\nvenv/\n.env\n.DS_Store\ndata/cache/\n
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.DS_Store
+data/cache/
