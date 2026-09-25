@@ -107,4 +107,11 @@ Repository source code is released under the MIT License. The WDC-SILSO source d
 
 ## Current evidence state
 
-The committed empirical artifacts are regenerated from the frozen SILSO study input after strict-QA protocol changes. CI validates the frozen study fingerprint, all four declared baseline comparisons, per-seed robustness evidence, rolling-origin evaluation semantics, three Transformer seeds, and the matched context-sensitivity epoch cap and early-stopping policy. Context length is not claimed to have equal compute cost.
+The strict-QA empirical rerun uses the frozen SILSO study input and the final all-seed comparison protocol.
+
+- At 1 month, the Transformer beats HGB on MAE for all 3/3 seeds; mean Transformer-minus-HGB MAE delta = -0.992.
+- At 6 months, the Transformer beats HGB on MAE for all 3/3 seeds; mean delta = -0.838.
+- At 12 months, the conclusion is seed-sensitive: 2/3 seeds beat HGB, while the across-seed mean delta is +0.233 MAE, slightly favoring HGB on average.
+- The 12-month seed-42 comparison alone is therefore not treated as evidence of general Transformer superiority.
+
+CI binds the committed results to the frozen study fingerprint, common target dates, all four baseline comparisons, all three Transformer seeds, rolling-origin evaluation semantics, and the declared context-sensitivity controls.
