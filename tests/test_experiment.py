@@ -16,6 +16,8 @@ from src.run_experiment import (
     moving_block_bootstrap_mae_delta,
     parse_silso_bytes,
     seasonal_naive_from_context,
+    select_hgb_baseline,
+    select_ridge_baseline,
 )
 
 
@@ -103,3 +105,21 @@ def test_frozen_study_input_fingerprint_guard():
     # Synthetic content must not accidentally satisfy the real frozen fingerprint.
     with pytest.raises(ValueError, match="study-input SHA-256"):
         freeze_study_frame(frame)
+
+
+def test_baseline_selection_uses_declared_validation_grids():
+    rng = np.random.default_rng(7)
+    X_train = rng.normal(size=(80, 8))
+    y_train = X_train[:, 0] * 0.5 + rng.normal(scale=0.1, size=80)
+    X_val = rng.normal(size=(20, 8))
+    y_val = X_val[:, 0] * 0.5 + rng.normal(scale=0.1, size=20)
+
+    _, ridge_meta = select_ridge_baseline(X_train, y_train, X_val, y_val)
+    _, hgb_meta = select_hgb_baseline(X_train, y_train, X_val, y_val)
+
+    assert ridge_meta["selected_alpha"] in ridge_meta["candidate_alphas"]
+    assert "validation_mse_scaled" in ridge_meta
+    assert hgb_meta["selected_learning_rate"] in {0.03, 0.05, 0.10}
+    assert hgb_meta["selected_max_leaf_nodes"] in {15, 31}
+    assert hgb_meta["early_stopping"] is False
+    assert "validation_mse_scaled" in hgb_meta
