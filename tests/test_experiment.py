@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import hashlib
 
 import numpy as np
@@ -137,3 +138,23 @@ def test_uncertainty_contract_includes_all_primary_baselines():
     text = source.read_text(encoding="utf-8")
     for name in declared:
         assert f'"{name}"' in text
+
+
+def test_committed_empirical_evidence_matches_frozen_protocol():
+    root = Path(__file__).resolve().parents[1]
+    metrics = json.loads((root / "results" / "metrics.json").read_text(encoding="utf-8"))
+    assert metrics["research_bundle"] is True
+    assert metrics["status"] == "complete"
+    assert metrics["dataset"]["study_input_sha256"] == EXPECTED_STUDY_INPUT_SHA256
+    assert metrics["dataset"]["n_months_study"] == 3327
+    assert metrics["protocol"]["horizons_months"] == [1, 6, 12]
+    assert metrics["protocol"]["evaluation_mode"] == "rolling_origin_direct_forecast_with_observed_history"
+    assert metrics["protocol"]["transformer_seeds"] == [13, 42, 73]
+    assert metrics["protocol"]["max_epochs"] == MAX_EPOCHS
+    for horizon in ("1", "6", "12"):
+        uncertainty = metrics["horizons"][horizon]["transformer_vs_baseline_uncertainty"]
+        assert set(uncertainty) == {"persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"}
+    for row in metrics["context_sensitivity_horizon_1"].values():
+        assert row["transformer_max_epochs"] == MAX_EPOCHS
+    generated_tex = (root / "paper" / "results.tex").read_text(encoding="utf-8")
+    assert "Generated empirical results" in generated_tex
