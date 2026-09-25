@@ -1,11 +1,12 @@
 cff-version: 1.2.0
-message: "Please cite this repository and WDC-SILSO Version 2 data."
+message: "If you use this research bundle, please cite the repository and WDC-SILSO Sunspot Number Version 2.0."
 title: "Multi-Horizon Transformer Forecasting on WDC-SILSO Monthly Sunspot Data"
 type: software
 authors:
   - family-names: "Saputra"
-    given-names: "Devis W."
-version: 2.0.0
+    given-names: "Devis Wawan"
+version: 2.1.0
+date-released: 2026-09-25
 license: MIT
 repository-code: "https://github.com/devissaputra/mini_transformers_sequences"
 keywords:
@@ -13,4 +14,6 @@ keywords:
   - time series forecasting
   - sunspot number
   - WDC-SILSO
-  - reproducibility
+  - multi-horizon forecasting
+  - reproducible research
+  - AI Engineering

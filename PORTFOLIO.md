@@ -1,7 +1,10 @@
 # Portfolio Positioning
 
 **Primary tag:** AI Engineering  
-**Artifact type:** Research Bundle  
-**Research theme:** time-series forecasting and architecture-vs-baseline evaluation
+**Artifact type:** Empirical Research Bundle  
+**Research theme:** multi-horizon forecasting, sequence models, baseline discipline and temporal reproducibility  
+**External data:** WDC-SILSO Sunspot Number Version 2.0
 
-The bundle is designed to demonstrate research judgment: externally sourced scientific data, checksum provenance, chronology-aware evaluation, simple baselines that can beat deep models, and a willingness to report negative results.
+This repository demonstrates research judgment rather than deep-model promotion: a frozen scientific input, chronology-safe normalization, common target-date evaluation, strong simple and nonlinear baselines, a compact Transformer with context-invariant trainable size, repeated seeds, block-bootstrap comparisons, regime/era diagnostics and reproducible manuscript outputs.
+
+Recommended review path: `README.md` → `DATA.md` → `src/run_experiment.py` → `results/summary.md` → `RESEARCH_BUNDLE.md` → `paper/paper.md`.

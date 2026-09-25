@@ -1,3 +1,3 @@
 # Transformer Forecasting Research Bundle
 
-AI Engineering research bundle using the official WDC-SILSO monthly sunspot series to compare persistence, ridge autoregression and a compact Transformer under chronological holdout, train-only normalization and validation-based checkpoint selection.
+Empirical AI Engineering study on frozen WDC-SILSO monthly sunspot data comparing persistence, seasonal-naive, ridge, gradient boosting and a compact Transformer across 1-, 6- and 12-month horizons with common target dates, repeated seeds, serial-dependence-aware uncertainty and controlled context sensitivity.

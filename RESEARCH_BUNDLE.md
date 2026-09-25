@@ -4,29 +4,37 @@
 
 **Area:** AI Engineering  
 **Study:** compact Transformer versus strong forecasting baselines across horizons  
-**Dataset:** WDC-SILSO monthly mean total sunspot number, Version 2.0
+**Dataset:** WDC-SILSO monthly mean total Sunspot Number Version 2.0  
+**Frozen study era:** 1749-01 through 2026-03  
+**Study-input SHA-256:** `02adc08ef41aca6e5a02a21417d38bd3ed1dc14ab4bb3de5df5c93488c017a9b`
 
 ## Required evidence
 
 A valid full result records:
 
-1. official SILSO URL, DOI, license and SHA-256;
-2. raw nonmissing row count, definitive row count and excluded provisional row count;
-3. first and last definitive month;
-4. context length and forecast horizons;
-5. chronological train/validation/test boundaries and scaler fit boundary;
-6. persistence, seasonal-naive, ridge and histogram-gradient-boosting baselines;
-7. Transformer architecture, seeds and best validation epochs;
-8. RMSE and MAE at 1-, 6-, and 12-month horizons;
-9. moving-block bootstrap intervals of Transformer-vs-baseline absolute-error differences;
-10. high-activity versus other-period error analysis;
-11. early-versus-late test-era robustness;
-12. context-length sensitivity;
-13. software environment and generated figures.
+1. official SILSO source, DOI, license, downloaded-file SHA-256 and frozen study-input SHA-256;
+2. frozen study cutoff, study-row count, latest available/definitive months and excluded post-cutoff/provisional rows;
+3. monthly continuity of the frozen study series;
+4. common validation and test target-date boundaries;
+5. context length and forecast horizons;
+6. scaler fit boundary restricted to the training era;
+7. persistence, seasonal-naive, ridge and histogram-gradient-boosting baselines;
+8. Transformer architecture, fixed positional encoding, seeds and best validation epochs;
+9. RMSE and MAE at 1-, 6-, and 12-month horizons;
+10. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences;
+11. high-activity versus other-period error analysis;
+12. early-versus-late test-era robustness;
+13. context-length sensitivity on identical target dates with invariant trainable Transformer size;
+14. software environment and generated figures;
+15. synchronized Markdown and LaTeX generated results.
+
+## Comparison contract
+
+Context sensitivity must change context history without changing the test target dates or the number of trainable positional parameters. Primary horizons must also share the same validation and test target boundaries.
 
 ## Statistical boundary
 
-Forecast errors are serially dependent. The repository therefore avoids an iid bootstrap and uses 12-month moving blocks for descriptive paired error-difference intervals. These intervals do not establish universal statistical superiority.
+Forecast errors are serially dependent. Moving-block bootstrap intervals are descriptive paired error-difference summaries. Transformer seeds quantify optimization sensitivity on the same historical series and are not independent replications.
 
 ## Non-claims
 
