@@ -7,9 +7,11 @@ import pytest
 import torch
 
 from src.run_experiment import (
+    MAX_EPOCHS,
     EXPECTED_STUDY_INPUT_SHA256,
     TransformerForecaster,
     chronological_split,
+    context_sensitivity,
     fixed_target_boundaries,
     freeze_study_frame,
     make_windows,
@@ -123,3 +125,15 @@ def test_baseline_selection_uses_declared_validation_grids():
     assert hgb_meta["selected_max_leaf_nodes"] in {15, 31}
     assert hgb_meta["early_stopping"] is False
     assert "validation_mse_scaled" in hgb_meta
+
+
+def test_context_sensitivity_uses_primary_training_budget_by_default():
+    assert context_sensitivity.__defaults__[-1] == MAX_EPOCHS
+
+
+def test_uncertainty_contract_includes_all_primary_baselines():
+    declared = {"persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"}
+    source = Path(__file__).resolve().parents[1] / "src" / "run_experiment.py"
+    text = source.read_text(encoding="utf-8")
+    for name in declared:
+        assert f'"{name}"' in text
