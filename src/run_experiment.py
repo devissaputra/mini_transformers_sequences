@@ -132,7 +132,9 @@ def load_real_series(data_path: str | Path | None = None, cache_dir: str | Path 
         source = DATA_URL
 
     full = parse_silso_bytes(raw)
-    invalid_flags = sorted(set(full["flag"].dropna().astype(int).tolist()) - {0, 1})
+    if full["flag"].isna().any():
+        raise ValueError("SILSO CSV contains missing or non-numeric definitive/provisional flags")
+    invalid_flags = sorted(set(full["flag"].astype(int).tolist()) - {0, 1})
     if invalid_flags:
         raise ValueError(f"Unexpected SILSO definitive/provisional flags: {invalid_flags}")
     available_definitive = full[full["flag"] == 1].copy().reset_index(drop=True)
