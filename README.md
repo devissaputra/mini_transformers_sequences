@@ -95,3 +95,8 @@ A win on one horizon does not establish general Transformer superiority. Sunspot
 ## Professor review path
 
 `README.md` → `DATA.md` → `src/run_experiment.py` → `results/summary.md` → `results/metrics.json` → `RESEARCH_BUNDLE.md` → `REPRODUCIBILITY.md` → `ETHICS.md` → `paper/paper.md`.
+
+
+## Licensing boundary
+
+Repository source code is released under the MIT License. The WDC-SILSO source data are **not** relicensed by this repository; SILSO identifies them under CC BY-NC 4.0 with attribution requirements. Generated metrics and figures are provided as research evidence, and users should preserve SILSO attribution and assess the source-data license when reusing data-derived artifacts. See `DATA_LICENSE.md`.
