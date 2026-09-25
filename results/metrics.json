@@ -205,6 +205,152 @@
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         }
       },
+      "transformer_vs_baseline_uncertainty_all_seeds": {
+        "persistence": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -2.06869002219077,
+              "moving_block_bootstrap_95_interval": [
+                -2.7669238312466367,
+                -1.314714529707625
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -2.220031698186834,
+              "moving_block_bootstrap_95_interval": [
+                -2.8874033870639746,
+                -1.521810469469867
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -2.07267190744211,
+              "moving_block_bootstrap_95_interval": [
+                -2.7302071617172285,
+                -1.3746429576530115
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -2.1204645426065714,
+          "std_delta_across_seeds": 0.08625066785420801,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "seasonal_naive": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -21.549170514126796,
+              "moving_block_bootstrap_95_interval": [
+                -26.248927119830707,
+                -17.05589552297965
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -21.70051219012286,
+              "moving_block_bootstrap_95_interval": [
+                -26.20487611229355,
+                -16.89614200463167
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -21.55315239937814,
+              "moving_block_bootstrap_95_interval": [
+                -26.341503062405742,
+                -17.057568571302628
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -21.6009450345426,
+          "std_delta_across_seeds": 0.08625066785420778,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "ridge": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -1.015055596291482,
+              "moving_block_bootstrap_95_interval": [
+                -1.6734297622073522,
+                -0.44000599878328356
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -1.1663972722875464,
+              "moving_block_bootstrap_95_interval": [
+                -1.8682674459508948,
+                -0.5080340345342604
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -1.019037481542822,
+              "moving_block_bootstrap_95_interval": [
+                -1.833382372956376,
+                -0.2996344501907771
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -1.0668301167072836,
+          "std_delta_across_seeds": 0.08625066785420808,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "hist_gradient_boosting": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -0.939734926408103,
+              "moving_block_bootstrap_95_interval": [
+                -1.6767235508337548,
+                -0.30200237802974417
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -1.0910766024041674,
+              "moving_block_bootstrap_95_interval": [
+                -1.8653449576582888,
+                -0.45833948229015437
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -0.9437168116594431,
+              "moving_block_bootstrap_95_interval": [
+                -1.694676912387711,
+                -0.3235502392115263
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -0.9915094468239044,
+          "std_delta_across_seeds": 0.08625066785420804,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        }
+      },
       "activity_error_analysis": {
         "training_75th_percentile": 111.30000305175781,
         "high_activity_test_points": 219,
@@ -552,6 +698,152 @@
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+        }
+      },
+      "transformer_vs_baseline_uncertainty_all_seeds": {
+        "persistence": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -6.477981962599196,
+              "moving_block_bootstrap_95_interval": [
+                -8.541605442780273,
+                -4.158288904424904
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -7.569757054875921,
+              "moving_block_bootstrap_95_interval": [
+                -9.618992795743742,
+                -5.337859635166937
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -7.434211427385026,
+              "moving_block_bootstrap_95_interval": [
+                -9.623474942170107,
+                -5.0769978852601385
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -7.160650148286714,
+          "std_delta_across_seeds": 0.5950798627876693,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "seasonal_naive": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -17.133236773379213,
+              "moving_block_bootstrap_95_interval": [
+                -21.923680906038026,
+                -12.297398659130476
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -18.22501186565594,
+              "moving_block_bootstrap_95_interval": [
+                -22.74762301201577,
+                -13.364189731609361
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -18.089466238165045,
+              "moving_block_bootstrap_95_interval": [
+                -22.770076693428887,
+                -13.364920299547219
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -17.81590495906673,
+          "std_delta_across_seeds": 0.5950798627876702,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "ridge": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -2.951077280817805,
+              "moving_block_bootstrap_95_interval": [
+                -4.627482623022956,
+                -1.1178397058366656
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -4.04285237309453,
+              "moving_block_bootstrap_95_interval": [
+                -5.698160987716538,
+                -2.325300858615043
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -3.907306745603636,
+              "moving_block_bootstrap_95_interval": [
+                -5.323152631610721,
+                -2.4997216221806533
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -3.633745466505324,
+          "std_delta_across_seeds": 0.5950798627876693,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "hist_gradient_boosting": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -0.1558162826054039,
+              "moving_block_bootstrap_95_interval": [
+                -1.284598057836411,
+                0.9672793073469962
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -1.247591374882129,
+              "moving_block_bootstrap_95_interval": [
+                -2.6294093262038465,
+                0.04283335340767136
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -1.1120457473912349,
+              "moving_block_bootstrap_95_interval": [
+                -2.2931039382780916,
+                -0.013764353586269658
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -0.8384844682929226,
+          "std_delta_across_seeds": 0.5950798627876693,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
         }
       },
       "activity_error_analysis": {
@@ -906,6 +1198,152 @@
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+        }
+      },
+      "transformer_vs_baseline_uncertainty_all_seeds": {
+        "persistence": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -9.918367781080642,
+              "moving_block_bootstrap_95_interval": [
+                -15.31672856929424,
+                -4.101246797143521
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -14.591070908325928,
+              "moving_block_bootstrap_95_interval": [
+                -19.17995667500539,
+                -9.118806869776044
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -15.416087451281848,
+              "moving_block_bootstrap_95_interval": [
+                -20.46044010127987,
+                -10.11226033677568
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -13.308508713562807,
+          "std_delta_across_seeds": 2.9647857815710754,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "seasonal_naive": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -9.918367781080642,
+              "moving_block_bootstrap_95_interval": [
+                -15.31672856929424,
+                -4.101246797143521
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -14.591070908325928,
+              "moving_block_bootstrap_95_interval": [
+                -19.17995667500539,
+                -9.118806869776044
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -15.416087451281848,
+              "moving_block_bootstrap_95_interval": [
+                -20.46044010127987,
+                -10.11226033677568
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -13.308508713562807,
+          "std_delta_across_seeds": 2.9647857815710754,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "ridge": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": -0.35360729228984844,
+              "moving_block_bootstrap_95_interval": [
+                -3.3783899453309205,
+                2.7914805717296423
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -5.026310419535136,
+              "moving_block_bootstrap_95_interval": [
+                -7.482028665914908,
+                -2.2488576379266227
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -5.851326962491055,
+              "moving_block_bootstrap_95_interval": [
+                -8.356085500058468,
+                -3.0794568177816037
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": -3.743748224772013,
+          "std_delta_across_seeds": 2.964785781571076,
+          "seeds_favoring_transformer": 3,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
+        },
+        "hist_gradient_boosting": {
+          "per_seed": {
+            "13": {
+              "mean_mae_delta_a_minus_b": 3.6236256523580526,
+              "moving_block_bootstrap_95_interval": [
+                1.0774502972201607,
+                6.27462958442719
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "42": {
+              "mean_mae_delta_a_minus_b": -1.0490774748872356,
+              "moving_block_bootstrap_95_interval": [
+                -2.46662552449273,
+                0.528139274420036
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            },
+            "73": {
+              "mean_mae_delta_a_minus_b": -1.8740940178431553,
+              "moving_block_bootstrap_95_interval": [
+                -3.43282551887979,
+                -0.15672569401967226
+              ],
+              "block_months": 12,
+              "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
+            }
+          },
+          "mean_delta_across_seeds": 0.23348471987588715,
+          "std_delta_across_seeds": 2.9647857815710763,
+          "seeds_favoring_transformer": 2,
+          "n_seeds": 3,
+          "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
         }
       },
       "activity_error_analysis": {

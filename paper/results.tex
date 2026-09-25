@@ -49,6 +49,30 @@ Horizon & Comparator & Transformer--baseline $\Delta$MAE [95\% block interval] \
 \begin{table}[htbp]
 \centering
 \small
+\begin{tabular}{rrr}
+\toprule
+Horizon & Comparator & Mean $\Delta$MAE across Transformer seeds \\
+\midrule
+1 & Persistence & -2.120 $\pm$ 0.086 (3/3 seeds favor Transformer) \\
+1 & Seasonal naive & -21.601 $\pm$ 0.086 (3/3 seeds favor Transformer) \\
+1 & Ridge & -1.067 $\pm$ 0.086 (3/3 seeds favor Transformer) \\
+1 & HGB & -0.992 $\pm$ 0.086 (3/3 seeds favor Transformer) \\
+6 & Persistence & -7.161 $\pm$ 0.595 (3/3 seeds favor Transformer) \\
+6 & Seasonal naive & -17.816 $\pm$ 0.595 (3/3 seeds favor Transformer) \\
+6 & Ridge & -3.634 $\pm$ 0.595 (3/3 seeds favor Transformer) \\
+6 & HGB & -0.838 $\pm$ 0.595 (3/3 seeds favor Transformer) \\
+12 & Persistence & -13.309 $\pm$ 2.965 (3/3 seeds favor Transformer) \\
+12 & Seasonal naive & -13.309 $\pm$ 2.965 (3/3 seeds favor Transformer) \\
+12 & Ridge & -3.744 $\pm$ 2.965 (3/3 seeds favor Transformer) \\
+12 & HGB & 0.233 $\pm$ 2.965 (2/3 seeds favor Transformer) \\
+\bottomrule
+\end{tabular}
+\caption{Optimization-seed robustness of Transformer-minus-baseline MAE.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
 \begin{tabular}{rrrrr}
 \toprule
 Context & Ridge $\alpha$ & Ridge MAE & Transformer MAE & Transformer best epoch \\

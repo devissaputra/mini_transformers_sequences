@@ -32,6 +32,25 @@ Negative values favor the seed-42 Transformer. Intervals use 12-month moving blo
 | 6 | -7.570 [-9.463, -5.549] | -18.225 [-22.676, -13.850] | -4.043 [-5.821, -2.270] | -1.248 [-2.630, 0.041] |
 | 12 | -14.591 [-19.171, -9.774] | -14.591 [-19.171, -9.774] | -5.026 [-7.348, -2.304] | -1.049 [-2.492, 0.538] |
 
+## All-seed Transformer-vs-baseline robustness
+
+Negative mean deltas favor the Transformer; the seed-count column shows how often that direction appears across seeds.
+
+| Horizon | Comparator | Mean MAE delta across seeds | SD across seeds | Seeds favoring Transformer |
+|---:|---|---:|---:|---:|
+| 1 | persistence | -2.120 | 0.086 | 3/3 |
+| 1 | seasonal_naive | -21.601 | 0.086 | 3/3 |
+| 1 | ridge | -1.067 | 0.086 | 3/3 |
+| 1 | hist_gradient_boosting | -0.992 | 0.086 | 3/3 |
+| 6 | persistence | -7.161 | 0.595 | 3/3 |
+| 6 | seasonal_naive | -17.816 | 0.595 | 3/3 |
+| 6 | ridge | -3.634 | 0.595 | 3/3 |
+| 6 | hist_gradient_boosting | -0.838 | 0.595 | 3/3 |
+| 12 | persistence | -13.309 | 2.965 | 3/3 |
+| 12 | seasonal_naive | -13.309 | 2.965 | 3/3 |
+| 12 | ridge | -3.744 | 2.965 | 3/3 |
+| 12 | hist_gradient_boosting | 0.233 | 2.965 | 2/3 |
+
 ## Activity and test-era checks
 
 | Horizon | Transformer high-activity MAE | HGB high-activity MAE | Transformer early MAE | Transformer late MAE | HGB early MAE | HGB late MAE |
