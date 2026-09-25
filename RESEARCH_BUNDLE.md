@@ -22,7 +22,7 @@ A valid full result records:
 8. HGB internal random early stopping disabled and selected baseline hyperparameters recorded;
 9. Transformer architecture, fixed positional encoding, seeds and best validation epochs;
 10. RMSE and MAE at 1-, 6-, and 12-month horizons;
-11. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences;
+11. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences for persistence, seasonal naive, Ridge and HGB;
 12. high-activity versus other-period error analysis;
 13. early-versus-late test-era robustness;
 14. context-length sensitivity on identical target dates with invariant trainable Transformer size;
@@ -31,7 +31,9 @@ A valid full result records:
 
 ## Comparison contract
 
-Context sensitivity must change context history without changing the test target dates or the number of trainable positional parameters. Primary horizons must also share the same validation and test target boundaries.
+Context sensitivity must change context history without changing the test target dates, the maximum Transformer training budget or the number of trainable positional parameters. Primary horizons must also share the same validation and test target boundaries.
+
+The primary evaluation is rolling-origin direct forecasting with observed history. Earlier realized test-era observations may enter the context for later test targets; future observations and target values may not.
 
 ## Statistical boundary
 
