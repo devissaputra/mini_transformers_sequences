@@ -25,7 +25,7 @@ The study uses the monthly mean total Sunspot Number Version 2.0 from WDC--SILSO
 All models use chronological target splits. Validation and test target boundaries are defined on the raw monthly timeline and reused across every forecast horizon and context-length condition. Scaling statistics are fitted only through the final training target.
 
 \section{Baselines}
-Persistence and 12-month seasonal-naive forecasts provide transparent references. Ridge autoregression is a linear high-dimensional baseline, while histogram gradient boosting provides a nonlinear non-neural baseline.
+Persistence and 12-month seasonal-naive forecasts provide transparent references. Ridge autoregression is a linear high-dimensional baseline, while histogram gradient boosting provides a nonlinear non-neural baseline. Ridge and HGB settings are selected by MSE on the same chronological validation era used for Transformer checkpoint selection; HGB internal random early stopping is disabled.
 
 \section{Transformer}
 The compact encoder follows the self-attention architecture family introduced by Vaswani et al. \cite{vaswani2017attention}. It uses a 32-dimensional projection, four attention heads, one encoder layer, feed-forward width 64, and fixed sinusoidal positional encoding. The fixed positional encoding prevents context-length sensitivity from changing the number of trainable positional parameters. Training uses early stopping on the chronological validation era and seeds 13, 42, and 73.
