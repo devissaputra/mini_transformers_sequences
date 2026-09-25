@@ -542,23 +542,29 @@ def build_results_latex(results: dict) -> str:
         f"{bs}begin{{table}}[htbp]",
         f"{bs}centering",
         f"{bs}small",
-        f"{bs}begin{{tabular}}{{rrrr}}",
+        f"{bs}begin{{tabular}}{{rrr}}",
         f"{bs}toprule",
-        "Horizon & Transformer--Ridge $\\Delta$MAE & 95\\% block interval & Transformer--HGB $\\Delta$MAE " + row_end,
+        "Horizon & Comparator & Transformer--baseline $\\Delta$MAE [95\\% block interval] " + row_end,
         f"{bs}midrule",
     ]
+    comparator_labels = {
+        "persistence": "Persistence",
+        "seasonal_naive": "Seasonal naive",
+        "ridge": "Ridge",
+        "hist_gradient_boosting": "HGB",
+    }
     for horizon, row in results["horizons"].items():
-        ur = row["transformer_vs_baseline_uncertainty"]["ridge"]
-        uh = row["transformer_vs_baseline_uncertainty"]["hist_gradient_boosting"]
-        lo, hi = ur["moving_block_bootstrap_95_interval"]
-        lines.append(
-            f"{horizon} & {ur['mean_mae_delta_a_minus_b']:.3f} & [{lo:.3f}, {hi:.3f}] & "
-            f"{uh['mean_mae_delta_a_minus_b']:.3f} " + row_end
-        )
+        for key in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"):
+            d = row["transformer_vs_baseline_uncertainty"][key]
+            lo, hi = d["moving_block_bootstrap_95_interval"]
+            lines.append(
+                f"{horizon} & {comparator_labels[key]} & "
+                f"{d['mean_mae_delta_a_minus_b']:.3f} [{lo:.3f}, {hi:.3f}] " + row_end
+            )
     lines += [
         f"{bs}bottomrule",
         f"{bs}end{{tabular}}",
-        f"{bs}caption{{Paired seed-42 absolute-error differences. Negative values favor the Transformer. HGB intervals remain available in the machine-readable results.}}",
+        f"{bs}caption{{Paired seed-42 absolute-error differences against every declared primary baseline. Negative values favor the Transformer. Intervals use 12-month moving blocks.}}",
         f"{bs}end{{table}}",
         "",
         f"{bs}begin{{table}}[htbp]",
@@ -579,7 +585,7 @@ def build_results_latex(results: dict) -> str:
     lines += [
         f"{bs}bottomrule",
         f"{bs}end{{tabular}}",
-        f"{bs}caption{{Horizon-1 context sensitivity on identical target dates with invariant trainable Transformer size.}}",
+        f"{bs}caption{{Horizon-1 context sensitivity on identical target dates, invariant trainable Transformer size, and the same maximum epoch budget as the primary study.}}",
         f"{bs}end{{table}}",
         "",
     ]
