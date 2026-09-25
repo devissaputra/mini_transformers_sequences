@@ -22,7 +22,7 @@ Does a compact Transformer earn its complexity over strong simple and tabular ba
 The study uses the monthly mean total Sunspot Number Version 2.0 from WDC--SILSO, Royal Observatory of Belgium \cite{silso}. SILSO identifies the data under DOI 10.24414/qnza-ac80 and CC BY-NC 4.0. The research input is frozen through March 2026 and verified by a deterministic hash over the exact month/value sequence. Later source rows are excluded from this bundle rather than silently extending the evidence.
 
 \section{Forecast design}
-All models use chronological target splits. Validation and test target boundaries are defined on the raw monthly timeline and reused across every forecast horizon and context-length condition. Scaling statistics are fitted only through the final training target.
+All models use chronological target splits. Validation and test target boundaries are defined on the raw monthly timeline and reused across every forecast horizon and context-length condition. Scaling statistics are fitted only through the final training target. Evaluation is rolling-origin direct forecasting with observed history: later test targets may use earlier realized observations in their context, but never future observations or the target itself.
 
 \section{Baselines}
 Persistence and 12-month seasonal-naive forecasts provide transparent references. Ridge autoregression is a linear high-dimensional baseline, while histogram gradient boosting provides a nonlinear non-neural baseline. Ridge and HGB settings are selected by MSE on the same chronological validation era used for Transformer checkpoint selection; HGB internal random early stopping is disabled.
@@ -31,7 +31,7 @@ Persistence and 12-month seasonal-naive forecasts provide transparent references
 The compact encoder follows the self-attention architecture family introduced by Vaswani et al. \cite{vaswani2017attention}. It uses a 32-dimensional projection, four attention heads, one encoder layer, feed-forward width 64, and fixed sinusoidal positional encoding. The fixed positional encoding prevents context-length sensitivity from changing the number of trainable positional parameters. Training uses early stopping on the chronological validation era and seeds 13, 42, and 73.
 
 \section{Evaluation}
-RMSE and MAE are reported for each horizon. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap as a descriptive serial-dependence-aware uncertainty summary. Errors are also separated by high solar activity and by early versus late halves of the common test era. Horizon-1 context sensitivity compares 60, 132, and 264 months using identical validation and test target dates.
+RMSE and MAE are reported for each horizon. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap against persistence, seasonal naive, ridge, and HGB as a descriptive serial-dependence-aware uncertainty summary. Errors are also separated by high solar activity and by early versus late halves of the common test era. Horizon-1 context sensitivity compares 60, 132, and 264 months using identical validation and test target dates and the same maximum Transformer epoch budget as the primary study.
 
 \input{results.tex}
 
