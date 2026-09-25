@@ -247,13 +247,13 @@ def select_ridge_baseline(X_train, y_train, X_val, y_val):
     for alpha in RIDGE_ALPHAS:
         model = Ridge(alpha=alpha).fit(X_train, y_train)
         val_pred = model.predict(X_val)
-        val_mae = float(np.mean(np.abs(val_pred - y_val)))
-        candidates.append((val_mae, alpha, model))
+        val_mse = float(np.mean((val_pred - y_val) ** 2))
+        candidates.append((val_mse, alpha, model))
     candidates.sort(key=lambda x: (x[0], x[1]))
-    best_mae, best_alpha, best_model = candidates[0]
+    best_mse, best_alpha, best_model = candidates[0]
     return best_model, {
         "selected_alpha": float(best_alpha),
-        "validation_mae_scaled": float(best_mae),
+        "validation_mse_scaled": float(best_mse),
         "candidate_alphas": [float(a) for a in RIDGE_ALPHAS],
     }
 
@@ -271,16 +271,16 @@ def select_hgb_baseline(X_train, y_train, X_val, y_val):
             random_state=PRIMARY_SEED,
         ).fit(X_train, y_train)
         val_pred = model.predict(X_val)
-        val_mae = float(np.mean(np.abs(val_pred - y_val)))
-        candidates.append((val_mae, config, model))
+        val_mse = float(np.mean((val_pred - y_val) ** 2))
+        candidates.append((val_mse, config, model))
     candidates.sort(key=lambda x: (x[0], x[1]["learning_rate"], x[1]["max_leaf_nodes"]))
-    best_mae, best_config, best_model = candidates[0]
+    best_mse, best_config, best_model = candidates[0]
     return best_model, {
         "selected_learning_rate": float(best_config["learning_rate"]),
         "selected_max_leaf_nodes": int(best_config["max_leaf_nodes"]),
         "max_iter": 300,
         "early_stopping": False,
-        "validation_mae_scaled": float(best_mae),
+        "validation_mse_scaled": float(best_mse),
         "candidate_grid": [dict(c) for c in HGB_CANDIDATES],
     }
 
@@ -597,7 +597,7 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "test_target_start_month": dates.iloc[boundaries[1]].strftime("%Y-%m"),
             "shared_target_boundaries_across_horizons_and_contexts": True,
             "positional_encoding": "fixed_sinusoidal",
-            "baseline_selection": "chronological_validation_mae",
+            "baseline_selection": "chronological_validation_mse",
             "ridge_alpha_candidates": list(RIDGE_ALPHAS),
             "hgb_candidate_grid": [dict(c) for c in HGB_CANDIDATES],
             "hgb_internal_early_stopping": False,
