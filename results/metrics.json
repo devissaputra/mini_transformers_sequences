@@ -1,6 +1,10 @@
 {
   "research_bundle": true,
-  "status": "regenerate_required",
-  "message": "Run src/run_experiment.py against the official WDC-SILSO monthly V2.0 source. Previous statsmodels yearly-series metrics were retired.",
-  "dataset": "WDC-SILSO monthly mean total sunspot number V2.0"
+  "status": "regeneration_required_after_protocol_upgrade",
+  "dataset": {
+    "name": "WDC-SILSO monthly mean total sunspot number Version 2.0",
+    "doi": "10.24414/qnza-ac80",
+    "license": "CC BY-NC 4.0"
+  },
+  "message": "Run the current definitive-only multi-horizon protocol. Previous yearly-series and one-horizon metrics are not valid evidence for this version."
 }
