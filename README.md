@@ -76,7 +76,7 @@ Fixed sinusoidal positions are important here: changing context length no longer
 - the same paired comparison for every declared Transformer seed, plus across-seed delta mean/SD and direction counts;
 - high-activity versus other-period errors using a training-era threshold;
 - early-versus-late test-era robustness;
-- context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates and the same 60-epoch maximum training budget;
+- context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates and the same 60-epoch cap and early-stopping policy;
 - 12-month moving-block Transformer-vs-baseline MAE intervals for **all four** primary baselines: persistence, seasonal naive, ridge and HGB.
 
 ## Run
