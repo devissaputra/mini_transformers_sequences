@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
 <rect width="1200" height="675" fill="#f8fafc"/><rect x="40" y="40" width="1120" height="595" rx="28" fill="#fff" stroke="#dbeafe" stroke-width="3"/>
-<text x="85" y="125" font-family="Arial" font-size="24" fill="#2563eb" font-weight="700">AI ENGINEERING</text>
-<text x="85" y="205" font-family="Arial" font-size="50" fill="#0f172a" font-weight="700">Transformer for Real Temporal Sequences</text>
-<text x="85" y="260" font-family="Arial" font-size="26" fill="#475569">Forecasting yearly sunspot activity with self-attention</text>
-<rect x="85" y="325" width="245" height="115" rx="18" fill="#eff6ff"/><text x="112" y="367" font-family="Arial" font-size="20" fill="#1d4ed8" font-weight="700">WINDOW</text><text x="112" y="404" font-family="Arial" font-size="20" fill="#334155">24 years</text>
-<rect x="360" y="325" width="245" height="115" rx="18" fill="#ecfeff"/><text x="387" y="367" font-family="Arial" font-size="20" fill="#155e75" font-weight="700">ATTENTION</text><text x="387" y="404" font-family="Arial" font-size="20" fill="#334155">4 heads • dim 24</text>
-<rect x="635" y="325" width="245" height="115" rx="18" fill="#faf5ff"/><text x="662" y="367" font-family="Arial" font-size="20" fill="#7e22ce" font-weight="700">ENCODER</text><text x="662" y="404" font-family="Arial" font-size="20" fill="#334155">1 layer • FFN 48</text>
-<rect x="910" y="325" width="205" height="115" rx="18" fill="#f0fdf4"/><text x="937" y="367" font-family="Arial" font-size="20" fill="#15803d" font-weight="700">TRAINING</text><text x="937" y="404" font-family="Arial" font-size="20" fill="#334155">24 epochs</text>
-<text x="85" y="535" font-family="Arial" font-size="23" fill="#334155">Research question</text>
-<text x="85" y="575" font-family="Arial" font-size="25" fill="#0f172a" font-weight="600">Does self-attention improve next-year sunspot forecasting over simpler baselines?</text>
+<text x="85" y="125" font-family="Arial" font-size="24" fill="#2563eb" font-weight="700">AI ENGINEERING · EMPIRICAL RESEARCH BUNDLE</text>
+<text x="85" y="200" font-family="Arial" font-size="47" fill="#0f172a" font-weight="700">Transformer Forecasting on WDC-SILSO</text>
+<text x="85" y="252" font-family="Arial" font-size="25" fill="#475569">Monthly sunspot forecasting against strong chronological baselines</text>
+<rect x="85" y="315" width="245" height="120" rx="18" fill="#eff6ff"/><text x="112" y="357" font-family="Arial" font-size="19" fill="#1d4ed8" font-weight="700">PRIMARY CONTEXT</text><text x="112" y="397" font-family="Arial" font-size="23" fill="#334155">132 months</text>
+<rect x="360" y="315" width="245" height="120" rx="18" fill="#ecfeff"/><text x="387" y="357" font-family="Arial" font-size="19" fill="#155e75" font-weight="700">HORIZONS</text><text x="387" y="397" font-family="Arial" font-size="23" fill="#334155">1 · 6 · 12 months</text>
+<rect x="635" y="315" width="245" height="120" rx="18" fill="#faf5ff"/><text x="662" y="357" font-family="Arial" font-size="19" fill="#7e22ce" font-weight="700">TRANSFORMER</text><text x="662" y="397" font-family="Arial" font-size="22" fill="#334155">dim 32 · 4 heads</text>
+<rect x="910" y="315" width="205" height="120" rx="18" fill="#f0fdf4"/><text x="937" y="357" font-family="Arial" font-size="19" fill="#15803d" font-weight="700">DATA FREEZE</text><text x="937" y="397" font-family="Arial" font-size="21" fill="#334155">through 2026-03</text>
+<text x="85" y="515" font-family="Arial" font-size="22" fill="#334155">Research question</text>
+<text x="85" y="558" font-family="Arial" font-size="24" fill="#0f172a" font-weight="600">Does a compact Transformer earn its complexity over strong baselines?</text>
+<text x="85" y="602" font-family="Arial" font-size="19" fill="#64748b">Common target dates · repeated seeds · block-bootstrap uncertainty · controlled context sensitivity</text>
 </svg>
