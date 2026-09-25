@@ -12,6 +12,10 @@ Every primary horizon and every context-length sensitivity condition uses common
 
 Context length still changes attention compute and the number of usable training windows, so these sensitivity conditions do not claim equal wall-clock or FLOP budgets.
 
+## Retrospective activity diagnostic
+
+The high-activity error analysis groups test months using their realized sunspot values relative to a threshold estimated from training data. This is a retrospective diagnostic of where forecast errors concentrate; it is not a regime label available to the forecasting models at prediction time.
+
 ## Forecast scope
 
 The experiment is not a physical model of the Sun and is not validated for operational space-weather decisions. Forecast errors may differ substantially around solar maxima, across eras and under future regime changes.
