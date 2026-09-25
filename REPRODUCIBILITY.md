@@ -45,7 +45,8 @@ This design allows SILSO to append later observations without silently changing 
 - moving-block bootstrap length: 12 months;
 - context sensitivity: 60, 132, 264 months at horizon 1;
 - context-sensitivity Transformer runs use the same maximum epoch budget as the primary study;
-- paired moving-block uncertainty is reported against persistence, seasonal naive, Ridge and HGB.
+- paired moving-block uncertainty is reported against persistence, seasonal naive, Ridge and HGB for the primary seed and every declared Transformer seed;
+- across-seed robustness reports mean/SD of observed MAE deltas and the number of seeds favoring the Transformer.
 
 ## Outputs
 
