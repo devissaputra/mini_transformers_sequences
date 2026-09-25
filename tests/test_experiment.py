@@ -154,6 +154,12 @@ def test_committed_empirical_evidence_matches_frozen_protocol():
     for horizon in ("1", "6", "12"):
         uncertainty = metrics["horizons"][horizon]["transformer_vs_baseline_uncertainty"]
         assert set(uncertainty) == {"persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"}
+        all_seed = metrics["horizons"][horizon]["transformer_vs_baseline_uncertainty_all_seeds"]
+        assert set(all_seed) == {"persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"}
+        for comparison in all_seed.values():
+            assert comparison["n_seeds"] == 3
+            assert set(comparison["per_seed"]) == {"13", "42", "73"}
+            assert 0 <= comparison["seeds_favoring_transformer"] <= 3
     for row in metrics["context_sensitivity_horizon_1"].values():
         assert row["transformer_max_epochs"] == MAX_EPOCHS
     generated_tex = (root / "paper" / "results.tex").read_text(encoding="utf-8")
