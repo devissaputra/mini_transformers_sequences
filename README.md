@@ -40,9 +40,10 @@ The comparison uses one common pair of **target-date boundaries** for every hori
 - final 15% of the pre-test era: validation targets;
 - the same validation/test target months are reused across all horizons;
 - the same target months are reused for 60-, 132- and 264-month context sensitivity;
-- normalization is fitted only through the last training target.
+- normalization is fitted only through the last training target;
+- evaluation is **rolling-origin direct forecasting with observed history**: later test targets may use earlier realized test-era observations in their context, but never the target value or any future observation.
 
-This avoids a subtle confound where changing context length also changes the evaluation era.
+This avoids a subtle confound where changing context length also changes the evaluation era. It also makes clear that the final 20% is not forecast recursively from one fixed historical origin.
 
 ## Baselines and Transformer
 
@@ -74,7 +75,8 @@ Fixed sinusoidal positions are important here: changing context length no longer
 - 12-month moving-block bootstrap summaries for Transformer-vs-baseline MAE differences;
 - high-activity versus other-period errors using a training-era threshold;
 - early-versus-late test-era robustness;
-- context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates.
+- context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates and the same 60-epoch maximum training budget;
+- 12-month moving-block Transformer-vs-baseline MAE intervals for **all four** primary baselines: persistence, seasonal naive, ridge and HGB.
 
 ## Run
 
