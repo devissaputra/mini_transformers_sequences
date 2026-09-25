@@ -26,6 +26,7 @@ This design allows SILSO to append later observations without silently changing 
 - target test boundary: final 20% of the frozen raw timeline;
 - target validation boundary: final 15% of the pre-test era;
 - identical target-date boundaries across all primary horizons and context sensitivity;
+- evaluation mode: rolling-origin direct forecasting with observed history;
 - Transformer projection dimension 32;
 - four attention heads;
 - feed-forward width 64;
@@ -42,7 +43,9 @@ This design allows SILSO to append later observations without silently changing 
 - early-stopping patience: 8;
 - deterministic PyTorch algorithms enabled;
 - moving-block bootstrap length: 12 months;
-- context sensitivity: 60, 132, 264 months at horizon 1.
+- context sensitivity: 60, 132, 264 months at horizon 1;
+- context-sensitivity Transformer runs use the same maximum epoch budget as the primary study;
+- paired moving-block uncertainty is reported against persistence, seasonal naive, Ridge and HGB.
 
 ## Outputs
 
