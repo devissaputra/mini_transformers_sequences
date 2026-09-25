@@ -18,7 +18,7 @@ One pair of validation/test target boundaries is computed from the frozen raw ti
 
 ## Baselines
 
-Persistence and 12-month seasonal naive provide transparent time-series references. Ridge autoregression provides a linear high-dimensional baseline. Histogram gradient boosting provides a nonlinear non-neural baseline.
+Persistence and 12-month seasonal naive provide transparent time-series references. Ridge autoregression provides a linear high-dimensional baseline. Histogram gradient boosting provides a nonlinear non-neural baseline. Ridge alpha and a small HGB configuration grid are selected using the same chronological validation era and validation-MSE criterion used for Transformer checkpoint selection. HGB internal random early stopping is disabled so it does not create an unreported random validation split.
 
 ## Transformer
 

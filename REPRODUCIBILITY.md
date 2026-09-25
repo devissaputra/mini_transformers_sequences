@@ -33,6 +33,9 @@ This design allows SILSO to append later observations without silently changing 
 - feed-forward width 64;
 - one encoder layer;
 - fixed sinusoidal positional encoding;
+- Ridge alpha candidates: 0.1, 1, 10, 100, selected by chronological validation MSE;
+- HGB candidate grid: learning rate {0.03, 0.05, 0.10} with max-leaf-nodes {15, 31} in the declared combinations, selected by chronological validation MSE;
+- HGB internal early stopping disabled;
 - Transformer seeds: 13, 42, 73;
 - max epochs: 60;
 - early-stopping patience: 8;

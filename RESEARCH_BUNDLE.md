@@ -18,15 +18,16 @@ A valid full result records:
 4. common validation and test target-date boundaries;
 5. context length and forecast horizons;
 6. scaler fit boundary restricted to the training era;
-7. persistence, seasonal-naive, ridge and histogram-gradient-boosting baselines;
-8. Transformer architecture, fixed positional encoding, seeds and best validation epochs;
-9. RMSE and MAE at 1-, 6-, and 12-month horizons;
-10. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences;
-11. high-activity versus other-period error analysis;
-12. early-versus-late test-era robustness;
-13. context-length sensitivity on identical target dates with invariant trainable Transformer size;
-14. software environment and generated figures;
-15. synchronized Markdown and LaTeX generated results.
+7. persistence and seasonal-naive baselines plus Ridge/HGB candidates selected on the chronological validation era by MSE;
+8. HGB internal random early stopping disabled and selected baseline hyperparameters recorded;
+9. Transformer architecture, fixed positional encoding, seeds and best validation epochs;
+10. RMSE and MAE at 1-, 6-, and 12-month horizons;
+11. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences;
+12. high-activity versus other-period error analysis;
+13. early-versus-late test-era robustness;
+14. context-length sensitivity on identical target dates with invariant trainable Transformer size;
+15. software environment and generated figures;
+16. synchronized Markdown and LaTeX generated results.
 
 ## Comparison contract
 

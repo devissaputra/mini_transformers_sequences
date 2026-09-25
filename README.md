@@ -53,6 +53,8 @@ Baselines:
 - ridge autoregression;
 - histogram gradient boosting.
 
+Ridge and histogram gradient boosting are selected from small declared grids using **the same chronological validation era and validation MSE principle** used for Transformer checkpoint selection. HGB's internal random early stopping is disabled, so baseline selection does not introduce a hidden random validation split.
+
 The Transformer uses:
 
 - input projection dimension 32;
