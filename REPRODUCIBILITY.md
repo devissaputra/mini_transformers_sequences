@@ -26,8 +26,6 @@ This design allows SILSO to append later observations without silently changing 
 - target test boundary: final 20% of the frozen raw timeline;
 - target validation boundary: final 15% of the pre-test era;
 - identical target-date boundaries across all primary horizons and context sensitivity;
-- ridge alpha: 1.0;
-- histogram gradient boosting: 300 iterations, learning rate 0.05;
 - Transformer projection dimension 32;
 - four attention heads;
 - feed-forward width 64;
@@ -37,7 +35,7 @@ This design allows SILSO to append later observations without silently changing 
 - mini-batch size: 64 supervised windows;
 - training objective and validation checkpoint criterion: mean squared error;
 - Ridge alpha candidates: 0.1, 1, 10, 100, selected by chronological validation MSE;
-- HGB candidate grid: learning rate {0.03, 0.05, 0.10} with max-leaf-nodes {15, 31} in the declared combinations, selected by chronological validation MSE;
+- HGB candidate grid: four declared learning-rate/max-leaf-node combinations; max iterations 300 and L2 regularization 1.0, selected by chronological validation MSE;
 - HGB internal early stopping disabled;
 - Transformer seeds: 13, 42, 73;
 - max epochs: 60;
