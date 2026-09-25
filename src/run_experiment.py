@@ -538,6 +538,49 @@ def build_results_latex(results: dict) -> str:
         f"Validation targets begin {results['protocol']['validation_target_start_month']} and test targets begin "
         f"{results['protocol']['test_target_start_month']} for every primary horizon and context-sensitivity condition.",
         "",
+        f"{bs}begin{{table}}[htbp]",
+        f"{bs}centering",
+        f"{bs}small",
+        f"{bs}begin{{tabular}}{{rrrr}}",
+        f"{bs}toprule",
+        "Horizon & Transformer--Ridge $\\Delta$MAE & 95\\% block interval & Transformer--HGB $\\Delta$MAE " + row_end,
+        f"{bs}midrule",
+    ]
+    for horizon, row in results["horizons"].items():
+        ur = row["transformer_vs_baseline_uncertainty"]["ridge"]
+        uh = row["transformer_vs_baseline_uncertainty"]["hist_gradient_boosting"]
+        lo, hi = ur["moving_block_bootstrap_95_interval"]
+        lines.append(
+            f"{horizon} & {ur['mean_mae_delta_a_minus_b']:.3f} & [{lo:.3f}, {hi:.3f}] & "
+            f"{uh['mean_mae_delta_a_minus_b']:.3f} " + row_end
+        )
+    lines += [
+        f"{bs}bottomrule",
+        f"{bs}end{{tabular}}",
+        f"{bs}caption{{Paired seed-42 absolute-error differences. Negative values favor the Transformer. HGB intervals remain available in the machine-readable results.}}",
+        f"{bs}end{{table}}",
+        "",
+        f"{bs}begin{{table}}[htbp]",
+        f"{bs}centering",
+        f"{bs}small",
+        f"{bs}begin{{tabular}}{{rrrrr}}",
+        f"{bs}toprule",
+        "Context & Ridge $\\alpha$ & Ridge MAE & Transformer MAE & Transformer best epoch " + row_end,
+        f"{bs}midrule",
+    ]
+    context = results.get("context_sensitivity_horizon_1", {})
+    if "status" not in context:
+        for window, row in context.items():
+            lines.append(
+                f"{window} & {row['ridge_selected_alpha']:.1f} & {row['ridge']['mae']:.3f} & "
+                f"{row['transformer_seed_42']['mae']:.3f} & {row['transformer_best_epoch']} " + row_end
+            )
+    lines += [
+        f"{bs}bottomrule",
+        f"{bs}end{{tabular}}",
+        f"{bs}caption{{Horizon-1 context sensitivity on identical target dates with invariant trainable Transformer size.}}",
+        f"{bs}end{{table}}",
+        "",
     ]
     return "\n".join(lines)
 
@@ -560,9 +603,63 @@ def write_summary(results: dict, path: Path) -> None:
             f"{m['ridge']['mae']:.3f} | {m['hist_gradient_boosting']['mae']:.3f} | "
             f"{m['transformer_seed_42']['mae']:.3f} | {tr['mae_mean']:.3f} ± {tr['mae_std']:.3f} |"
         )
+    lines += ["", "## Validation-selected baseline settings", "",
+        "| Horizon | Ridge alpha | HGB learning rate | HGB max leaf nodes |",
+        "|---:|---:|---:|---:|",
+    ]
+    for horizon, row in results["horizons"].items():
+        sel = row["baseline_selection"]
+        lines.append(
+            f"| {horizon} | {sel['ridge']['selected_alpha']:.1f} | "
+            f"{sel['hist_gradient_boosting']['selected_learning_rate']:.2f} | "
+            f"{sel['hist_gradient_boosting']['selected_max_leaf_nodes']} |"
+        )
+
+    lines += ["", "## Paired Transformer-vs-baseline MAE differences", "",
+        "Negative values favor the seed-42 Transformer. Intervals use 12-month moving blocks.", "",
+        "| Horizon | vs seasonal naive | vs Ridge | vs HGB |",
+        "|---:|---:|---:|---:|",
+    ]
+    for horizon, row in results["horizons"].items():
+        u = row["transformer_vs_baseline_uncertainty"]
+        cells = []
+        for name in ("seasonal_naive", "ridge", "hist_gradient_boosting"):
+            d = u[name]
+            lo, hi = d["moving_block_bootstrap_95_interval"]
+            cells.append(f"{d['mean_mae_delta_a_minus_b']:.3f} [{lo:.3f}, {hi:.3f}]")
+        lines.append(f"| {horizon} | {cells[0]} | {cells[1]} | {cells[2]} |")
+
+    lines += ["", "## Activity and test-era checks", "",
+        "| Horizon | Transformer high-activity MAE | HGB high-activity MAE | Transformer early MAE | Transformer late MAE | HGB early MAE | HGB late MAE |",
+        "|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for horizon, row in results["horizons"].items():
+        a = row["activity_error_analysis"]
+        e = row["era_robustness"]
+        lines.append(
+            f"| {horizon} | {a['transformer_seed_42']['mae_high_activity']:.3f} | "
+            f"{a['hist_gradient_boosting']['mae_high_activity']:.3f} | "
+            f"{e['early_test']['transformer_seed_42']['mae']:.3f} | "
+            f"{e['late_test']['transformer_seed_42']['mae']:.3f} | "
+            f"{e['early_test']['hist_gradient_boosting']['mae']:.3f} | "
+            f"{e['late_test']['hist_gradient_boosting']['mae']:.3f} |"
+        )
+
+    context = results.get("context_sensitivity_horizon_1", {})
+    if "status" not in context:
+        lines += ["", "## Horizon-1 context sensitivity", "",
+            "| Context months | Ridge alpha | Ridge MAE | Transformer MAE | Transformer best epoch |",
+            "|---:|---:|---:|---:|---:|",
+        ]
+        for window, row in context.items():
+            lines.append(
+                f"| {window} | {row['ridge_selected_alpha']:.1f} | {row['ridge']['mae']:.3f} | "
+                f"{row['transformer_seed_42']['mae']:.3f} | {row['transformer_best_epoch']} |"
+            )
+
     lines += [
         "", "## Interpretation guardrail", "",
-        "The Transformer is not assumed to win. Moving-block bootstrap intervals compare its absolute-error difference with strong baselines while respecting serial dependence more than an iid bootstrap. Results remain specific to this series, forecast horizon, context length and evaluation era.", "",
+        "The Transformer is not assumed to win. Moving-block bootstrap intervals compare paired absolute errors while preserving local serial dependence more than an iid bootstrap. The 12-month seasonal-naive forecast equals persistence at a 12-month horizon by construction. Results remain specific to this frozen series, forecast horizon, context length and evaluation era.", "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")
 
