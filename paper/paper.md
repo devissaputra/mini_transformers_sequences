@@ -26,7 +26,7 @@ The compact Transformer uses a 32-dimensional input projection, four attention h
 
 ## Evaluation
 
-MAE and RMSE are reported at all horizons. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap against persistence, seasonal naive, ridge and HGB. The primary seed is reported for continuity, but every declared Transformer seed receives the same paired comparison and the manuscript reports across-seed delta mean/SD plus how many seeds favor the Transformer. This prevents one favorable optimization seed from standing in for seed-invariant evidence. Errors are also separated into high-activity versus other periods and early versus late halves of the common test era. Context sensitivity uses the same maximum Transformer epoch cap and early-stopping policy as the primary study.
+MAE and RMSE are reported at all horizons. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap against persistence, seasonal naive, ridge and HGB. The primary seed is reported for continuity, but every declared Transformer seed receives the same paired comparison and the manuscript reports across-seed delta mean/SD plus how many seeds favor the Transformer. This prevents one favorable optimization seed from standing in for seed-invariant evidence. Errors are also separated retrospectively into high-activity versus other periods and into early versus late halves of the common test era. The high-activity group is defined from the realized test outcome relative to a training-era threshold and is an error-analysis diagnostic, not a forecast-time feature. Context sensitivity uses the same maximum Transformer epoch cap and early-stopping policy as the primary study.
 
 ## Results
 
