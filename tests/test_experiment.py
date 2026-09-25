@@ -1,11 +1,17 @@
 from pathlib import Path
+import hashlib
 
 import numpy as np
+import pandas as pd
+import pytest
 import torch
 
 from src.run_experiment import (
+    EXPECTED_STUDY_INPUT_SHA256,
     TransformerForecaster,
     chronological_split,
+    fixed_target_boundaries,
+    freeze_study_frame,
     make_windows,
     moving_block_bootstrap_mae_delta,
     parse_silso_bytes,
@@ -48,7 +54,7 @@ def test_chronological_scaler_stops_at_last_training_target():
     split = chronological_split(values, window=24, horizon=6)
     end = split["last_training_target_index"] + 1
     assert np.isclose(split["mean"], values[:end].mean())
-    assert 0 < split["val_start"] < split["test_start"]
+    assert 0 < split["validation_target_start"] < split["test_target_start"]
 
 
 def test_seasonal_naive_indexing():
@@ -67,3 +73,33 @@ def test_moving_block_bootstrap_is_deterministic_and_directional():
     out2 = moving_block_bootstrap_mae_delta(observed, good, bad, n_boot=50, seed=1)
     assert out1 == out2
     assert out1["mean_mae_delta_a_minus_b"] < 0
+
+
+def test_context_lengths_share_target_boundaries():
+    values = np.arange(1000, dtype="float32")
+    boundaries = fixed_target_boundaries(len(values))
+    a = chronological_split(values, window=60, horizon=1, validation_target_start=boundaries[0], test_target_start=boundaries[1])
+    b = chronological_split(values, window=264, horizon=1, validation_target_start=boundaries[0], test_target_start=boundaries[1])
+    assert a["validation_target_start"] == b["validation_target_start"]
+    assert a["test_target_start"] == b["test_target_start"]
+    assert a["target_indices_test"][0] == b["target_indices_test"][0]
+
+
+def test_trainable_parameter_count_does_not_depend_on_context_length():
+    a = TransformerForecaster(window=60)
+    b = TransformerForecaster(window=264)
+    count_a = sum(p.numel() for p in a.parameters() if p.requires_grad)
+    count_b = sum(p.numel() for p in b.parameters() if p.requires_grad)
+    assert count_a == count_b
+
+
+def test_frozen_study_input_fingerprint_guard():
+    months = pd.date_range("1749-01-01", periods=3327, freq="MS")
+    frame = pd.DataFrame({
+        "date": months,
+        "sunspots": np.arange(3327, dtype=float),
+        "flag": np.ones(3327, dtype=int),
+    })
+    # Synthetic content must not accidentally satisfy the real frozen fingerprint.
+    with pytest.raises(ValueError, match="study-input SHA-256"):
+        freeze_study_frame(frame)

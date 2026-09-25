@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches: [main]
-    paths: ["src/**", "tests/**", "requirements.txt", ".github/workflows/ci.yml"]
+    paths: ["src/**", "tests/**", "results/**", "paper/**", "README.md", "DATA.md", "ETHICS.md", "REPRODUCIBILITY.md", "RESEARCH_BUNDLE.md", "CITATION.cff", "requirements.txt", ".github/workflows/ci.yml"]
   pull_request:
     paths: ["src/**", "tests/**", "requirements.txt", ".github/workflows/ci.yml"]
   workflow_dispatch:

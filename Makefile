@@ -5,4 +5,4 @@ run:
 	python src/run_experiment.py
 
 test:
-	python -m compileall src
+	PYTHONPATH=. python -m pytest -q

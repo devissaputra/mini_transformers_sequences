@@ -1,12 +1,46 @@
-\documentclass{article}
-\title{Do Compact Transformers Beat Linear Baselines on Long-Horizon Sunspot History?}
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\title{Do Compact Transformers Beat Strong Baselines on Monthly Sunspot Forecasting?}
 \author{Devis Wawan Saputra}
+\date{}
+
 \begin{document}
 \maketitle
+
+\begin{abstract}
+Complex sequence models are often evaluated against weak baselines or on a single forecast horizon. This reproducible study compares a compact Transformer with persistence, seasonal-naive, ridge autoregression, and histogram gradient boosting on the WDC--SILSO Version 2.0 monthly sunspot series. The protocol freezes the scientific study input through March 2026, uses common target-date boundaries across horizons and context-length sensitivity tests, fits normalization on the training era only, repeats Transformer training across seeds, and reports moving-block bootstrap error-difference summaries, high-activity errors, and test-era robustness.
+\end{abstract}
+
+\section{Research question}
+Does a compact Transformer earn its complexity over strong simple and tabular baselines at 1-, 6-, and 12-month horizons, and are any advantages stable across random seeds, activity regimes, evaluation eras, and context lengths?
+
 \section{Data}
-We use the WDC-SILSO monthly mean total sunspot number Version 2.0 and record a checksum of the downloaded snapshot.
-\section{Design}
-A chronological holdout compares persistence, ridge autoregression and a compact Transformer.
-\section{Principle}
-Architectural complexity is not treated as evidence of superiority; negative results are retained.
+The study uses the monthly mean total Sunspot Number Version 2.0 from WDC--SILSO, Royal Observatory of Belgium \cite{silso}. SILSO identifies the data under DOI 10.24414/qnza-ac80 and CC BY-NC 4.0. The research input is frozen through March 2026 and verified by a deterministic hash over the exact month/value sequence. Later source rows are excluded from this bundle rather than silently extending the evidence.
+
+\section{Forecast design}
+All models use chronological target splits. Validation and test target boundaries are defined on the raw monthly timeline and reused across every forecast horizon and context-length condition. Scaling statistics are fitted only through the final training target.
+
+\section{Baselines}
+Persistence and 12-month seasonal-naive forecasts provide transparent references. Ridge autoregression is a linear high-dimensional baseline, while histogram gradient boosting provides a nonlinear non-neural baseline.
+
+\section{Transformer}
+The compact encoder follows the self-attention architecture family introduced by Vaswani et al. \cite{vaswani2017attention}. It uses a 32-dimensional projection, four attention heads, one encoder layer, feed-forward width 64, and fixed sinusoidal positional encoding. The fixed positional encoding prevents context-length sensitivity from changing the number of trainable positional parameters. Training uses early stopping on the chronological validation era and seeds 13, 42, and 73.
+
+\section{Evaluation}
+RMSE and MAE are reported for each horizon. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap as a descriptive serial-dependence-aware uncertainty summary. Errors are also separated by high solar activity and by early versus late halves of the common test era. Horizon-1 context sensitivity compares 60, 132, and 264 months using identical validation and test target dates.
+
+\input{results.tex}
+
+\section{Validity and responsible-use boundary}
+This is a statistical forecasting benchmark, not a physical solar model or an operational space-weather forecasting system. The time series is nonstationary and cyclic; a model advantage on this frozen historical test era does not establish future or cross-domain superiority. Bootstrap intervals are descriptive, and repeated seeds are not independent datasets.
+
+\section{Reproducibility}
+The executable study is \texttt{src/run\_experiment.py}. Generated evidence is written to \texttt{results/metrics.json}, \texttt{results/summary.md}, \texttt{results/figures/}, \texttt{paper/results.md}, and \texttt{paper/results.tex}.
+
+\bibliographystyle{plain}
+\bibliography{references}
 \end{document}

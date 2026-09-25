@@ -9,6 +9,7 @@ import platform
 import urllib.request
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -28,6 +29,9 @@ DATA_DOI = "10.24414/qnza-ac80"
 DATA_LICENSE = "CC BY-NC 4.0"
 MAX_EPOCHS = 60
 PATIENCE = 8
+STUDY_CUTOFF_MONTH = "2026-03"
+EXPECTED_STUDY_ROWS = 3327
+EXPECTED_STUDY_INPUT_SHA256 = "02adc08ef41aca6e5a02a21417d38bd3ed1dc14ab4bb3de5df5c93488c017a9b"
 
 
 class TransformerForecaster(nn.Module):
@@ -35,7 +39,15 @@ class TransformerForecaster(nn.Module):
         super().__init__()
         dim = 32
         self.projection = nn.Linear(1, dim)
-        self.position = nn.Parameter(torch.randn(1, window, dim) * 0.02)
+        position = torch.arange(window, dtype=torch.float32).unsqueeze(1)
+        div_term = torch.exp(
+            torch.arange(0, dim, 2, dtype=torch.float32)
+            * (-np.log(10000.0) / dim)
+        )
+        pe = torch.zeros(window, dim, dtype=torch.float32)
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        self.register_buffer("position", pe.unsqueeze(0), persistent=False)
         layer = nn.TransformerEncoderLayer(
             d_model=dim,
             nhead=4,
@@ -69,6 +81,40 @@ def parse_silso_bytes(raw: bytes) -> pd.DataFrame:
     return frame
 
 
+def study_input_fingerprint(frame: pd.DataFrame) -> str:
+    payload = "".join(
+        f"{row.date.strftime('%Y-%m')};{float(row.sunspots):.1f}\n"
+        for row in frame.itertuples()
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def freeze_study_frame(full: pd.DataFrame) -> tuple[pd.DataFrame, str]:
+    cutoff = pd.Timestamp(f"{STUDY_CUTOFF_MONTH}-01")
+    study = full[(full["flag"] == 1) & (full["date"] <= cutoff)].copy().reset_index(drop=True)
+    if len(study) != EXPECTED_STUDY_ROWS:
+        raise ValueError(
+            f"Unexpected frozen SILSO study length: {len(study)}; expected {EXPECTED_STUDY_ROWS}"
+        )
+    if study.empty or study["date"].iloc[-1] != cutoff:
+        raise ValueError(
+            f"Frozen SILSO study must end at {STUDY_CUTOFF_MONTH}; "
+            f"got {study['date'].iloc[-1] if not study.empty else 'empty'}"
+        )
+    expected_dates = pd.date_range(study["date"].iloc[0], cutoff, freq="MS")
+    if len(expected_dates) != len(study) or not np.array_equal(
+        study["date"].to_numpy(), expected_dates.to_numpy()
+    ):
+        raise ValueError("Frozen SILSO study series is not a complete monthly sequence")
+    fingerprint = study_input_fingerprint(study)
+    if fingerprint != EXPECTED_STUDY_INPUT_SHA256:
+        raise ValueError(
+            f"Unexpected frozen SILSO study-input SHA-256: {fingerprint}; "
+            f"expected {EXPECTED_STUDY_INPUT_SHA256}"
+        )
+    return study, fingerprint
+
+
 def load_real_series(data_path: str | Path | None = None, cache_dir: str | Path = "data/cache"):
     cache = Path(cache_dir)
     cache.mkdir(parents=True, exist_ok=True)
@@ -86,21 +132,31 @@ def load_real_series(data_path: str | Path | None = None, cache_dir: str | Path 
         source = DATA_URL
 
     full = parse_silso_bytes(raw)
-    definitive = full[full["flag"] == 1].copy().reset_index(drop=True)
-    if len(definitive) < 1000:
+    invalid_flags = sorted(set(full["flag"].dropna().astype(int).tolist()) - {0, 1})
+    if invalid_flags:
+        raise ValueError(f"Unexpected SILSO definitive/provisional flags: {invalid_flags}")
+    available_definitive = full[full["flag"] == 1].copy().reset_index(drop=True)
+    if len(available_definitive) < 1000:
         raise ValueError("unexpectedly few definitive SILSO observations")
+    definitive, study_sha = freeze_study_frame(full)
     metadata = {
         "name": "WDC-SILSO monthly mean total sunspot number Version 2.0",
         "url": DATA_URL,
         "doi": DATA_DOI,
         "license": DATA_LICENSE,
         "source": source,
-        "sha256": hashlib.sha256(raw).hexdigest(),
+        "source_snapshot_sha256": hashlib.sha256(raw).hexdigest(),
+        "study_input_sha256": study_sha,
+        "study_cutoff_month": STUDY_CUTOFF_MONTH,
         "n_months_raw_nonmissing": int(len(full)),
-        "n_months_definitive": int(len(definitive)),
-        "provisional_rows_excluded": int(len(full) - len(definitive)),
+        "n_months_definitive_available": int(len(available_definitive)),
+        "n_months_study": int(len(definitive)),
+        "provisional_rows_available": int((full["flag"] == 0).sum()),
+        "post_cutoff_rows_excluded": int((full["date"] > pd.Timestamp(f"{STUDY_CUTOFF_MONTH}-01")).sum()),
         "first_month": definitive["date"].iloc[0].strftime("%Y-%m"),
-        "last_definitive_month": definitive["date"].iloc[-1].strftime("%Y-%m"),
+        "last_study_month": definitive["date"].iloc[-1].strftime("%Y-%m"),
+        "last_definitive_available_month": available_definitive["date"].iloc[-1].strftime("%Y-%m"),
+        "last_available_month": full["date"].iloc[-1].strftime("%Y-%m"),
     }
     return definitive, metadata
 
@@ -116,17 +172,34 @@ def make_windows(values, window: int, horizon: int):
     return X, y, target_indices
 
 
-def chronological_split(values, window: int = WINDOW, horizon: int = 1, test_fraction: float = .20, validation_fraction_of_dev: float = .15):
-    raw_X, raw_y, target_indices = make_windows(values, window, horizon)
-    n = len(raw_X)
-    if n < 100:
-        raise ValueError("not enough windows for frozen forecasting protocol")
-    test_start = int((1.0 - test_fraction) * n)
-    val_start = int((1.0 - validation_fraction_of_dev) * test_start)
-    if not 0 < val_start < test_start < n:
-        raise ValueError("invalid chronological split")
+def fixed_target_boundaries(n_values: int, test_fraction: float = .20, validation_fraction_of_dev: float = .15):
+    test_target_start = int((1.0 - test_fraction) * n_values)
+    validation_target_start = int((1.0 - validation_fraction_of_dev) * test_target_start)
+    if not 0 < validation_target_start < test_target_start < n_values:
+        raise ValueError("invalid frozen target-date boundaries")
+    return validation_target_start, test_target_start
 
-    last_training_target = target_indices[val_start - 1]
+
+def chronological_split(
+    values,
+    window: int = WINDOW,
+    horizon: int = 1,
+    validation_target_start: int | None = None,
+    test_target_start: int | None = None,
+):
+    raw_X, raw_y, target_indices = make_windows(values, window, horizon)
+    if len(raw_X) < 100:
+        raise ValueError("not enough windows for frozen forecasting protocol")
+    if validation_target_start is None or test_target_start is None:
+        validation_target_start, test_target_start = fixed_target_boundaries(len(values))
+
+    train_mask = target_indices < validation_target_start
+    validation_mask = (target_indices >= validation_target_start) & (target_indices < test_target_start)
+    test_mask = target_indices >= test_target_start
+    if not train_mask.any() or not validation_mask.any() or not test_mask.any():
+        raise ValueError("target-date boundaries produce an empty forecasting partition")
+
+    last_training_target = int(target_indices[train_mask][-1])
     fit_values = np.asarray(values[: last_training_target + 1], dtype="float32")
     mean = float(fit_values.mean())
     std = float(fit_values.std())
@@ -136,18 +209,18 @@ def chronological_split(values, window: int = WINDOW, horizon: int = 1, test_fra
     X = (raw_X - mean) / std
     y = (raw_y - mean) / std
     return {
-        "X_train": X[:val_start],
-        "y_train": y[:val_start],
-        "X_val": X[val_start:test_start],
-        "y_val": y[val_start:test_start],
-        "X_test": X[test_start:],
-        "y_test": y[test_start:],
-        "target_indices_test": target_indices[test_start:],
+        "X_train": X[train_mask],
+        "y_train": y[train_mask],
+        "X_val": X[validation_mask],
+        "y_val": y[validation_mask],
+        "X_test": X[test_mask],
+        "y_test": y[test_mask],
+        "target_indices_test": target_indices[test_mask],
         "mean": mean,
         "std": std,
-        "val_start": int(val_start),
-        "test_start": int(test_start),
-        "last_training_target_index": int(last_training_target),
+        "validation_target_start": int(validation_target_start),
+        "test_target_start": int(test_target_start),
+        "last_training_target_index": last_training_target,
     }
 
 
@@ -207,6 +280,7 @@ def train_transformer(X_train, y_train, X_val, y_val, max_epochs: int = MAX_EPOC
     torch.manual_seed(seed)
     np.random.seed(seed)
     torch.set_num_threads(1)
+    torch.use_deterministic_algorithms(True)
     generator = torch.Generator().manual_seed(seed)
     loader = DataLoader(
         TensorDataset(torch.tensor(X_train), torch.tensor(y_train)),
@@ -244,8 +318,11 @@ def train_transformer(X_train, y_train, X_val, y_val, max_epochs: int = MAX_EPOC
     return model, history, best_epoch
 
 
-def fit_horizon(values, dates, horizon: int, max_epochs: int, quick: bool = False):
-    split = chronological_split(values, window=WINDOW, horizon=horizon)
+def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_epochs: int, quick: bool = False):
+    split = chronological_split(
+        values, window=WINDOW, horizon=horizon,
+        validation_target_start=boundaries[0], test_target_start=boundaries[1]
+    )
     X_train, y_train = split["X_train"], split["y_train"]
     X_val, y_val = split["X_val"], split["y_val"]
     X_test, y_test = split["X_test"], split["y_test"]
@@ -321,10 +398,13 @@ def fit_horizon(values, dates, horizon: int, max_epochs: int, quick: bool = Fals
     }
 
 
-def context_sensitivity(values, horizon: int = 1, max_epochs: int = 40):
+def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, max_epochs: int = 40):
     out = {}
     for window in (60, 132, 264):
-        split = chronological_split(values, window=window, horizon=horizon)
+        split = chronological_split(
+            values, window=window, horizon=horizon,
+            validation_target_start=boundaries[0], test_target_start=boundaries[1]
+        )
         X_train, y_train = split["X_train"], split["y_train"]
         X_val, y_val = split["X_val"], split["y_val"]
         X_test, y_test = split["X_test"], split["y_test"]
@@ -367,11 +447,54 @@ def _strip_plot(result: dict) -> dict:
     return {k: v for k, v in result.items() if k != "plot"}
 
 
+def build_results_latex(results: dict) -> str:
+    bs = "\\"
+    row_end = bs + bs
+    lines = [
+        f"{bs}section{{Generated empirical results}}",
+        "This section is generated by \\texttt{src/run\_experiment.py}; numerical values should not be hand-edited.",
+        "",
+        f"Frozen study input: {results['dataset']['first_month']} through "
+        f"{results['dataset']['last_study_month']}; SHA-256 "
+        f"\\texttt{{{results['dataset']['study_input_sha256']}}}.",
+        "",
+        f"{bs}begin{{table}}[htbp]",
+        f"{bs}centering",
+        f"{bs}small",
+        f"{bs}begin{{tabular}}{{rrrrrr}}",
+        f"{bs}toprule",
+        "Horizon & Persistence MAE & Seasonal MAE & Ridge MAE & HGB MAE & Transformer MAE " + row_end,
+        f"{bs}midrule",
+    ]
+    for horizon, row in results["horizons"].items():
+        m = row["metrics"]
+        lines.append(
+            f"{horizon} & {m['persistence']['mae']:.3f} & {m['seasonal_naive']['mae']:.3f} & "
+            f"{m['ridge']['mae']:.3f} & {m['hist_gradient_boosting']['mae']:.3f} & "
+            f"{m['transformer_seed_42']['mae']:.3f} " + row_end
+        )
+    lines += [
+        f"{bs}bottomrule",
+        f"{bs}end{{tabular}}",
+        f"{bs}caption{{Primary seed-42 mean absolute error under common target-date boundaries.}}",
+        f"{bs}label{{tab:primary-results}}",
+        f"{bs}end{{table}}",
+        "",
+        f"{bs}paragraph{{Boundary integrity.}}",
+        f"Validation targets begin {results['protocol']['validation_target_start_month']} and test targets begin "
+        f"{results['protocol']['test_target_start_month']} for every primary horizon and context-sensitivity condition.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def write_summary(results: dict, path: Path) -> None:
     lines = [
         "# Empirical Results Summary", "",
         "Generated by src/run_experiment.py; numerical values should not be hand-edited.", "",
-        f"Source: WDC-SILSO Version 2.0, definitive observations {results['dataset']['first_month']} through {results['dataset']['last_definitive_month']}.", "",
+        f"Source: WDC-SILSO Version 2.0, frozen study observations {results['dataset']['first_month']} through {results['dataset']['last_study_month']}.", "",
+        f"Study-input SHA-256: \`{results['dataset']['study_input_sha256']}\`.", "",
+        f"Common validation target start: {results['protocol']['validation_target_start_month']}; common test target start: {results['protocol']['test_target_start_month']}.", "",
         "| Horizon | Persistence MAE | Seasonal MAE | Ridge MAE | HGB MAE | Transformer MAE (seed 42) | Transformer repeated-seed mean ± SD |",
         "|---:|---:|---:|---:|---:|---:|---:|",
     ]
@@ -394,8 +517,9 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
     frame, metadata = load_real_series(data_path=data_path)
     values = frame["sunspots"].to_numpy(dtype="float32")
     dates = frame["date"]
+    boundaries = fixed_target_boundaries(len(values))
     horizons_with_plot = {
-        str(h): fit_horizon(values, dates, h, max_epochs=max_epochs, quick=quick)
+        str(h): fit_horizon(values, dates, h, boundaries=boundaries, max_epochs=max_epochs, quick=quick)
         for h in HORIZONS
     }
     results = {
@@ -411,15 +535,24 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "max_epochs": int(max_epochs),
             "patience": PATIENCE,
             "definitive_only": True,
+            "study_cutoff_month": STUDY_CUTOFF_MONTH,
+            "study_input_sha256": EXPECTED_STUDY_INPUT_SHA256,
+            "validation_target_start_index": int(boundaries[0]),
+            "test_target_start_index": int(boundaries[1]),
+            "validation_target_start_month": dates.iloc[boundaries[0]].strftime("%Y-%m"),
+            "test_target_start_month": dates.iloc[boundaries[1]].strftime("%Y-%m"),
+            "shared_target_boundaries_across_horizons_and_contexts": True,
+            "positional_encoding": "fixed_sinusoidal",
         },
         "horizons": {k: _strip_plot(v) for k, v in horizons_with_plot.items()},
-        "context_sensitivity_horizon_1": {"status": "skipped_in_quick_mode"} if quick else context_sensitivity(values),
+        "context_sensitivity_horizon_1": {"status": "skipped_in_quick_mode"} if quick else context_sensitivity(values, boundaries),
         "environment": {
             "python": platform.python_version(),
             "numpy": np.__version__,
             "pandas": pd.__version__,
             "scikit_learn": sklearn.__version__,
             "torch": torch.__version__,
+            "matplotlib": matplotlib.__version__,
         },
     }
     out = Path(results_dir)
@@ -432,6 +565,7 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
         "# Results\n\n" + (out / "summary.md").read_text(encoding="utf-8").replace("# Empirical Results Summary\n\n", "", 1),
         encoding="utf-8",
     )
+    Path("paper/results.tex").write_text(build_results_latex(results), encoding="utf-8")
     return results
 
 
