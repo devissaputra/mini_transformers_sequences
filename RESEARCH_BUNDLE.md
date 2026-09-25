@@ -32,7 +32,7 @@ A valid full result records:
 
 ## Comparison contract
 
-Context sensitivity must change context history without changing the test target dates, the maximum Transformer training budget or the number of trainable positional parameters. Primary horizons must also share the same validation and test target boundaries.
+Context sensitivity must change context history without changing the test target dates, the maximum Transformer epoch cap and early-stopping policy or the number of trainable positional parameters. Primary horizons must also share the same validation and test target boundaries.
 
 The primary evaluation is rolling-origin direct forecasting with observed history. Earlier realized test-era observations may enter the context for later test targets; future observations and target values may not.
 
