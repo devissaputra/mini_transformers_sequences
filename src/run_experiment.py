@@ -420,7 +420,7 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
     train_raw_end = split["last_training_target_index"] + 1
     uncertainty = {
         baseline: moving_block_bootstrap_mae_delta(observed, transformer_primary, forecasts[baseline])
-        for baseline in ("seasonal_naive", "ridge", "hist_gradient_boosting")
+        for baseline in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting")
     }
     activity = activity_error_analysis(observed, forecasts, values[:train_raw_end])
     target_dates = pd.Series(dates).iloc[split["target_indices_test"]].dt.strftime("%Y-%m").tolist()
@@ -451,7 +451,7 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
     }
 
 
-def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, max_epochs: int = 40):
+def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, max_epochs: int = MAX_EPOCHS):
     out = {}
     for window in (60, 132, 264):
         split = chronological_split(
@@ -470,6 +470,7 @@ def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, m
         with torch.no_grad():
             t_pred = model(torch.tensor(X_test)).cpu().numpy() * std + mean
         out[str(window)] = {
+            "transformer_max_epochs": int(max_epochs),
             "ridge": error_metrics(observed, ridge_pred),
             "ridge_selected_alpha": ridge_selection["selected_alpha"],
             "transformer_seed_42": error_metrics(observed, t_pred),
@@ -617,17 +618,17 @@ def write_summary(results: dict, path: Path) -> None:
 
     lines += ["", "## Paired Transformer-vs-baseline MAE differences", "",
         "Negative values favor the seed-42 Transformer. Intervals use 12-month moving blocks.", "",
-        "| Horizon | vs seasonal naive | vs Ridge | vs HGB |",
-        "|---:|---:|---:|---:|",
+        "| Horizon | vs persistence | vs seasonal naive | vs Ridge | vs HGB |",
+        "|---:|---:|---:|---:|---:|",
     ]
     for horizon, row in results["horizons"].items():
         u = row["transformer_vs_baseline_uncertainty"]
         cells = []
-        for name in ("seasonal_naive", "ridge", "hist_gradient_boosting"):
+        for name in ("persistence", "seasonal_naive", "ridge", "hist_gradient_boosting"):
             d = u[name]
             lo, hi = d["moving_block_bootstrap_95_interval"]
             cells.append(f"{d['mean_mae_delta_a_minus_b']:.3f} [{lo:.3f}, {hi:.3f}]")
-        lines.append(f"| {horizon} | {cells[0]} | {cells[1]} | {cells[2]} |")
+        lines.append(f"| {horizon} | {cells[0]} | {cells[1]} | {cells[2]} | {cells[3]} |")
 
     lines += ["", "## Activity and test-era checks", "",
         "| Horizon | Transformer high-activity MAE | HGB high-activity MAE | Transformer early MAE | Transformer late MAE | HGB early MAE | HGB late MAE |",
@@ -693,6 +694,7 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "validation_target_start_month": dates.iloc[boundaries[0]].strftime("%Y-%m"),
             "test_target_start_month": dates.iloc[boundaries[1]].strftime("%Y-%m"),
             "shared_target_boundaries_across_horizons_and_contexts": True,
+            "evaluation_mode": "rolling_origin_direct_forecast_with_observed_history",
             "positional_encoding": "fixed_sinusoidal",
             "baseline_selection": "chronological_validation_mse",
             "ridge_alpha_candidates": list(RIDGE_ALPHAS),
@@ -700,7 +702,7 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "hgb_internal_early_stopping": False,
         },
         "horizons": {k: _strip_plot(v) for k, v in horizons_with_plot.items()},
-        "context_sensitivity_horizon_1": {"status": "skipped_in_quick_mode"} if quick else context_sensitivity(values, boundaries),
+        "context_sensitivity_horizon_1": {"status": "skipped_in_quick_mode"} if quick else context_sensitivity(values, boundaries, max_epochs=max_epochs),
         "environment": {
             "python": platform.python_version(),
             "numpy": np.__version__,
