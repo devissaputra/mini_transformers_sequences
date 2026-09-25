@@ -22,12 +22,13 @@ A valid full result records:
 8. HGB internal random early stopping disabled and selected baseline hyperparameters recorded;
 9. Transformer architecture, fixed positional encoding, seeds and best validation epochs;
 10. RMSE and MAE at 1-, 6-, and 12-month horizons;
-11. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences for persistence, seasonal naive, Ridge and HGB;
-12. high-activity versus other-period error analysis;
-13. early-versus-late test-era robustness;
-14. context-length sensitivity on identical target dates with invariant trainable Transformer size;
-15. software environment and generated figures;
-16. synchronized Markdown and LaTeX generated results.
+11. moving-block bootstrap summaries of Transformer-vs-baseline absolute-error differences for persistence, seasonal naive, Ridge and HGB for the primary seed and every declared Transformer seed;
+12. across-seed MAE-delta mean/SD and direction counts so a favorable primary seed cannot stand in for seed-invariant evidence;
+13. high-activity versus other-period error analysis;
+14. early-versus-late test-era robustness;
+15. context-length sensitivity on identical target dates with invariant trainable Transformer size;
+16. software environment and generated figures;
+17. synchronized Markdown and LaTeX generated results.
 
 ## Comparison contract
 
