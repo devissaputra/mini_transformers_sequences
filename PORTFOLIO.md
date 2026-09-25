@@ -1,9 +1,7 @@
-# Transformer Forecasting for Sunspot Activity
+# Portfolio Positioning
 
-**Focus:** testing whether self-attention earns its complexity on a small time series.
+**Primary tag:** AI Engineering  
+**Artifact type:** Research Bundle  
+**Research theme:** time-series forecasting and architecture-vs-baseline evaluation
 
-A one-layer Transformer forecasts next-year sunspot activity from the previous 24 years and is evaluated against persistence and Ridge autoregression on a chronological hold-out set. Normalization is fitted only on the training period.
-
-The Transformer improves modestly over persistence: RMSE 31.8124 versus 33.0187. Ridge is substantially better at 19.2463. With only 228 training windows, the linear autoregressive model is the clear choice in this configuration.
-
-The repository includes deterministic PyTorch training, strong baselines, behavioural tests, CI, reproducibility notes, and generated diagnostics.
+The bundle is designed to demonstrate research judgment: externally sourced scientific data, checksum provenance, chronology-aware evaluation, simple baselines that can beat deep models, and a willingness to report negative results.

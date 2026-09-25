@@ -1,19 +1,6 @@
 {
-  "seed": 42,
-  "window_years": 24,
-  "n_windows": 285,
-  "train_windows": 228,
-  "test_windows": 57,
-  "persistence": {
-    "rmse": 33.01870346069336,
-    "mae": 25.198244094848633
-  },
-  "ridge": {
-    "rmse": 19.24633026123047,
-    "mae": 14.170472145080566
-  },
-  "transformer": {
-    "rmse": 31.812387466430664,
-    "mae": 23.522621154785156
-  }
+  "research_bundle": true,
+  "status": "regenerate_required",
+  "message": "Run src/run_experiment.py against the official WDC-SILSO monthly V2.0 source. Previous statsmodels yearly-series metrics were retired.",
+  "dataset": "WDC-SILSO monthly mean total sunspot number V2.0"
 }

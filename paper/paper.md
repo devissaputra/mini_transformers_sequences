@@ -1,25 +1,19 @@
-# Transformer Forecasting for Sunspot Activity
+# Do Compact Transformers Beat Linear Baselines on Long-Horizon Sunspot History?
 
-## Abstract
+## Status
+Research-bundle manuscript scaffold. Numerical findings are generated from the current WDC-SILSO runner.
 
-This experiment evaluates a compact Transformer against persistence and Ridge autoregression for next-year sunspot forecasting. The data are split chronologically and normalization is fitted only on the training period.
+## Question
+Does a compact Transformer improve monthly sunspot forecasting over persistence and ridge autoregression under chronological holdout?
 
-## Method
+## Data
+WDC-SILSO monthly mean total sunspot number, Version 2.0. The runner records the exact upstream SHA-256 checksum used for each study run.
 
-Twenty-four prior annual observations predict the next year. The experiment contains 285 windows, with 228 used for training and 57 held out for evaluation. The Transformer uses a 24-dimensional representation, four attention heads, one encoder layer, and a 48-unit feed-forward block.
+## Design
+A 132-month context window is used. The final 20% of windows are held out chronologically. A validation tail inside the development era selects the Transformer checkpoint. Normalization is fitted only from the fitting-era values.
 
-## Results
-
-| Model | RMSE | MAE |
-|---|---:|---:|
-| Persistence | 33.0187 | 25.1982 |
-| Ridge | 19.2463 | 14.1705 |
-| Transformer | 31.8124 | 23.5226 |
-
-## Interpretation
-
-The Transformer modestly improves over persistence but is substantially worse than Ridge. With only a few hundred sequence windows, self-attention does not justify its added complexity in this configuration.
+## Evaluation
+RMSE and MAE are reported for persistence, ridge and Transformer. A result in which the simpler baseline wins is treated as scientifically informative.
 
 ## Limitations
-
-The study uses one series, one hold-out period, and one Transformer configuration. Rolling-origin evaluation, stronger statistical baselines, repeated seeds, uncertainty estimates, and validation-based tuning are needed for stronger conclusions.
+This benchmark does not model solar physics, uncertainty intervals, regime shifts or operational space-weather consequences.

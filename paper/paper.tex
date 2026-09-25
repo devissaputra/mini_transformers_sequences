@@ -1,24 +1,12 @@
 \documentclass{article}
-\usepackage{booktabs}
-\usepackage[margin=1in]{geometry}
-\title{Transformer Forecasting for Sunspot Activity}
-\author{Devis W. Saputra}
-\date{}
+\title{Do Compact Transformers Beat Linear Baselines on Long-Horizon Sunspot History?}
+\author{Devis Wawan Saputra}
 \begin{document}
 \maketitle
-\begin{abstract}
-A compact Transformer is evaluated against persistence and Ridge autoregression for chronological next-year sunspot forecasting.
-\end{abstract}
-\section{Results}
-\begin{tabular}{lrr}
-\toprule
-Model & RMSE & MAE \\
-\midrule
-Persistence & 33.0187 & 25.1982 \\
-Ridge & 19.2463 & 14.1705 \\
-Transformer & 31.8124 & 23.5226 \\
-\bottomrule
-\end{tabular}
-\section{Interpretation}
-The Transformer improves slightly over persistence but is substantially worse than Ridge in this recorded experiment.
+\section{Data}
+We use the WDC-SILSO monthly mean total sunspot number Version 2.0 and record a checksum of the downloaded snapshot.
+\section{Design}
+A chronological holdout compares persistence, ridge autoregression and a compact Transformer.
+\section{Principle}
+Architectural complexity is not treated as evidence of superiority; negative results are retained.
 \end{document}

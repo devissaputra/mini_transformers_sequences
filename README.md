@@ -1,59 +1,44 @@
-# Transformer Forecasting for Sunspot Activity
+# Transformer Forecasting Research Bundle
 
 [![CI](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml)
 
+**Research Bundle · AI Engineering · sequence forecasting with strong baselines**
 
-**Category:** AI Engineering
-![Project overview](assets/01_cover.svg)
+This repository asks whether a compact Transformer earns its additional complexity on a long, real scientific time series. The default empirical source is the **WDC-SILSO Version 2.0 monthly mean total sunspot number**, fetched from the official SILSO data service.
 
-A small Transformer time-series experiment evaluated against baselines strong enough to challenge it.
+## Research question
 
-> **Does self-attention improve next-year sunspot forecasting over persistence and linear autoregression?**
+> Does a compact self-attention forecaster improve monthly sunspot prediction over persistence and ridge autoregression under a strictly chronological holdout?
 
-## Data and evaluation
+The bundle is designed so a negative result is useful. The Transformer is a hypothesis, not the assumed winner.
 
-The project uses the historical yearly sunspot series distributed with statsmodels.
+## Real dataset
 
-- 24 previous years → next-year target
-- 285 windows
-- first 228 windows for training
-- final 57 windows for testing
-- chronological split
-- normalization fitted only on the training period
+WDC-SILSO, Royal Observatory of Belgium: monthly mean total sunspot number, Version 2.0.
 
-## Models
+- monthly observations beginning in 1749;
+- official source: SILSO data files;
+- non-commercial attribution terms apply to the SILSO data;
+- recommended data citation/credit is documented in [DATA.md](DATA.md).
 
-![Forecasting pipeline](assets/02_data_pipeline.svg)
+The runner downloads the official semicolon-separated file from SILSO and records a SHA-256 checksum of the exact bytes used.
 
-1. **Persistence:** next year = most recent year.
-2. **Ridge autoregression:** linear prediction from the 24-year lag window.
-3. **Transformer encoder:** learned scalar projection + positional embedding + one encoder layer.
+## Frozen protocol
 
-Transformer configuration:
-
-- model dimension: 24
-- attention heads: 4
-- feed-forward width: 48
-- encoder layers: 1
-- dropout: 0.1
-- Adam learning rate: 0.002
-- 24 epochs
-
-## Recorded results
-
-![Transformer architecture](assets/03_data_or_model.svg)
-
-| Model | RMSE ↓ | MAE ↓ |
-|---|---:|---:|
-| Persistence | 33.0187 | 25.1982 |
-| **Ridge** | **19.2463** | **14.1705** |
-| Transformer | 31.8124 | 23.5226 |
-
-![Chronological evaluation](assets/04_evaluation_or_results.svg)
-
-The Transformer improves modestly over persistence, but the much simpler Ridge model is substantially better. With only 228 training windows, the attention model does not earn its extra complexity.
-
-That is the main result of the repo.
+1. Download the monthly Version 2.0 series from SILSO.
+2. Remove sentinel negative activity values.
+3. Construct 132-month input windows, approximately one solar cycle.
+4. Keep the final 20% of windows as an untouched chronological test set.
+5. Use the earlier windows for model development:
+   - first 85% of the pre-test windows for fitting;
+   - last 15% for validation/early stopping.
+6. Fit normalization only from the training-era values.
+7. Compare:
+   - persistence;
+   - ridge autoregression;
+   - one-layer Transformer encoder.
+8. Report RMSE and MAE on the final chronological test segment.
+9. Save dataset checksum, observation span, split sizes and software versions.
 
 ## Run
 
@@ -64,21 +49,24 @@ pip install -r requirements.txt
 python src/run_experiment.py
 ```
 
-## Test
+## Research Bundle contents
 
-```bash
-pip install pytest
-pytest
-```
+- official external scientific data;
+- checksum-based data provenance;
+- chronological train/validation/test design;
+- strong simple baselines;
+- validation-based Transformer checkpoint selection;
+- reproducible seeds;
+- tests and CI;
+- paper-ready protocol;
+- explicit limitations and non-claims.
 
-CI checks model shapes, train-only preprocessing, baselines, and a one-epoch Transformer smoke run.
+See [RESEARCH_BUNDLE.md](RESEARCH_BUNDLE.md).
 
-## Why the baseline still matters
+## Interpretation boundary
 
-The Transformer does beat persistence, but it falls well short of Ridge. With only 228 training windows, that is a useful warning against equating architectural sophistication with better forecasting.
+A lower test error on this one series would not establish general Transformer superiority. Sunspot dynamics are structured, periodic and nonstationary; forecasting conclusions depend on horizon, window length, evaluation era and baseline set.
 
-The repo therefore treats the Transformer as one hypothesis among several, not as the default winner. The chronological split and train-only normalization keep the comparison honest.
+## Citation
 
-## What I would try next
-
-A deeper follow-up would add autoregressive statistical models, spectral or seasonal features, rolling-origin evaluation, repeated seeds, validation-based tuning, uncertainty intervals, and alternative forecast horizons. I would only increase Transformer capacity after establishing that the additional data and evaluation design can support it.
+When using SILSO data, follow the attribution instructions in [DATA.md](DATA.md). Repository software metadata are in [CITATION.cff](CITATION.cff).
