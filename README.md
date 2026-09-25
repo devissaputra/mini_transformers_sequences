@@ -74,7 +74,7 @@ Fixed sinusoidal positions are important here: changing context length no longer
 - repeated Transformer seeds;
 - 12-month moving-block bootstrap summaries for Transformer-vs-baseline MAE differences for the primary seed;
 - the same paired comparison for every declared Transformer seed, plus across-seed delta mean/SD and direction counts;
-- high-activity versus other-period errors using a training-era threshold;
+- retrospective high-activity versus other-period error stratification using a training-era threshold; the realized test value defines the diagnostic group and is never a model input;
 - early-versus-late test-era robustness;
 - context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates and the same 60-epoch cap and early-stopping policy;
 - 12-month moving-block Transformer-vs-baseline MAE intervals for **all four** primary baselines: persistence, seasonal naive, ridge and HGB.
