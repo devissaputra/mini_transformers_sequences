@@ -107,4 +107,4 @@ Repository source code is released under the MIT License. The WDC-SILSO source d
 
 ## Current evidence state
 
-The committed empirical artifacts were regenerated from the frozen SILSO study input after the final strict-QA protocol changes. CI validates that the committed results use the frozen study fingerprint, all four declared baseline uncertainty comparisons, rolling-origin evaluation semantics, three Transformer seeds, and the matched context-sensitivity training budget.
+The committed empirical artifacts are regenerated from the frozen SILSO study input after strict-QA protocol changes. CI validates the frozen study fingerprint, all four declared baseline comparisons, per-seed robustness evidence, rolling-origin evaluation semantics, three Transformer seeds, and the matched context-sensitivity epoch cap and early-stopping policy. Context length is not claimed to have equal compute cost.
