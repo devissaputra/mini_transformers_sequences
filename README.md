@@ -1,44 +1,40 @@
-# Transformer Forecasting Research Bundle
+# Transformer Forecasting on WDC-SILSO
 
 [![CI](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/ci.yml)
+[![Empirical Study](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/empirical.yml/badge.svg)](https://github.com/devissaputra/mini_transformers_sequences/actions/workflows/empirical.yml)
 
-**Research Bundle · AI Engineering · sequence forecasting with strong baselines**
+**Research Bundle · AI Engineering · multi-horizon sequence forecasting**
 
-This repository asks whether a compact Transformer earns its additional complexity on a long, real scientific time series. The default empirical source is the **WDC-SILSO Version 2.0 monthly mean total sunspot number**, fetched from the official SILSO data service.
+This repository asks a deliberately falsifiable question: **does a compact Transformer earn its complexity over strong simple and tabular baselines on a long real scientific time series?** The source is the official WDC-SILSO Version 2.0 monthly mean total sunspot number. The Transformer is a hypothesis, not the presumed winner.
 
-## Research question
+## Research questions
 
-> Does a compact self-attention forecaster improve monthly sunspot prediction over persistence and ridge autoregression under a strictly chronological holdout?
+1. Does a compact Transformer improve 1-, 6-, or 12-month forecasting over persistence, seasonal-naive, ridge autoregression, and histogram gradient boosting?
+2. Are Transformer results stable across random seeds?
+3. Does the conclusion change between early and late parts of the final test era?
+4. Does performance deteriorate disproportionately during high solar activity?
+5. Does the result depend strongly on the context length?
 
-The bundle is designed so a negative result is useful. The Transformer is a hypothesis, not the assumed winner.
+## Data
 
-## Real dataset
+The official SILSO monthly mean total sunspot series begins in 1749. The runner downloads `SN_m_tot_V2.0.csv`, records the SHA-256 of the exact bytes used, removes unavailable sentinel values, and uses only rows marked **definitive** for the primary empirical study. Provisional rows are counted and excluded.
 
-WDC-SILSO, Royal Observatory of Belgium: monthly mean total sunspot number, Version 2.0.
+WDC-SILSO licenses these data under **CC BY-NC 4.0** and requests explicit attribution to WDC-SILSO, Royal Observatory of Belgium, with DOI `10.24414/qnza-ac80`.
 
-- monthly observations beginning in 1749;
-- official source: SILSO data files;
-- non-commercial attribution terms apply to the SILSO data;
-- recommended data citation/credit is documented in [DATA.md](DATA.md).
+## Frozen design
 
-The runner downloads the official semicolon-separated file from SILSO and records a SHA-256 checksum of the exact bytes used.
-
-## Frozen protocol
-
-1. Download the monthly Version 2.0 series from SILSO.
-2. Remove sentinel negative activity values.
-3. Construct 132-month input windows, approximately one solar cycle.
-4. Keep the final 20% of windows as an untouched chronological test set.
-5. Use the earlier windows for model development:
-   - first 85% of the pre-test windows for fitting;
-   - last 15% for validation/early stopping.
-6. Fit normalization only from the training-era values.
-7. Compare:
-   - persistence;
-   - ridge autoregression;
-   - one-layer Transformer encoder.
-8. Report RMSE and MAE on the final chronological test segment.
-9. Save dataset checksum, observation span, split sizes and software versions.
+- context: 132 months;
+- horizons: 1, 6 and 12 months;
+- final 20% of supervised windows: chronological test set;
+- previous 15% of the development era: validation/early stopping;
+- normalization fitted only through the final training target;
+- baselines: persistence, 12-month seasonal naive, ridge, histogram gradient boosting;
+- Transformer seeds: 13, 42, 73;
+- test metrics: RMSE and MAE;
+- moving-block bootstrap intervals for Transformer-vs-baseline MAE differences;
+- high-activity error analysis using the training-era 75th percentile;
+- early-vs-late test-era robustness;
+- context sensitivity at 60, 132 and 264 months for horizon 1.
 
 ## Run
 
@@ -46,27 +42,16 @@ The runner downloads the official semicolon-separated file from SILSO and record
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python src/run_experiment.py
+PYTHONPATH=. pytest -q
+PYTHONPATH=. python src/run_experiment.py
 ```
 
-## Research Bundle contents
-
-- official external scientific data;
-- checksum-based data provenance;
-- chronological train/validation/test design;
-- strong simple baselines;
-- validation-based Transformer checkpoint selection;
-- reproducible seeds;
-- tests and CI;
-- paper-ready protocol;
-- explicit limitations and non-claims.
-
-See [RESEARCH_BUNDLE.md](RESEARCH_BUNDLE.md).
+Generated evidence includes `results/metrics.json`, `results/summary.md`, three horizon forecast figures, and `paper/results.md`.
 
 ## Interpretation boundary
 
-A lower test error on this one series would not establish general Transformer superiority. Sunspot dynamics are structured, periodic and nonstationary; forecasting conclusions depend on horizon, window length, evaluation era and baseline set.
+A win on one horizon does not establish general Transformer superiority. Sunspot dynamics are periodic, nonstationary and scientifically structured. Conclusions remain conditional on the forecast horizon, test era, context length, baselines, optimization and data revision state. A simpler model winning is a valid and useful outcome.
 
-## Citation
+## Professor review path
 
-When using SILSO data, follow the attribution instructions in [DATA.md](DATA.md). Repository software metadata are in [CITATION.cff](CITATION.cff).
+`README.md` → `DATA.md` → `src/run_experiment.py` → `results/summary.md` → `results/metrics.json` → `RESEARCH_BUNDLE.md` → `REPRODUCIBILITY.md` → `paper/paper.md`.
