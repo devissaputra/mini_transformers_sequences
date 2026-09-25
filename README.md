@@ -72,7 +72,8 @@ Fixed sinusoidal positions are important here: changing context length no longer
 
 - MAE and RMSE for 1-, 6-, and 12-month horizons;
 - repeated Transformer seeds;
-- 12-month moving-block bootstrap summaries for Transformer-vs-baseline MAE differences;
+- 12-month moving-block bootstrap summaries for Transformer-vs-baseline MAE differences for the primary seed;
+- the same paired comparison for every declared Transformer seed, plus across-seed delta mean/SD and direction counts;
 - high-activity versus other-period errors using a training-era threshold;
 - early-versus-late test-era robustness;
 - context sensitivity at 60, 132 and 264 months on identical horizon-1 target dates and the same 60-epoch maximum training budget;
