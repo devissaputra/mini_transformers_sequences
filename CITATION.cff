@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Saputra"
     given-names: "Devis Wawan"
-version: 2.1.0
+version: 2.2.0
 date-released: 2026-09-25
 license: MIT
 repository-code: "https://github.com/devissaputra/mini_transformers_sequences"
