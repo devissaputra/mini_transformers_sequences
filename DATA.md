@@ -1,24 +1,37 @@
 # Dataset Card — WDC-SILSO Monthly Sunspot Number
 
 ## Source
-World Data Center SILSO, Royal Observatory of Belgium.  
-Dataset: Monthly mean total sunspot number, Version 2.0.  
+
+World Data Center SILSO, Royal Observatory of Belgium  
+Dataset: Monthly mean total sunspot number, Version 2.0  
 Official data service: https://www.sidc.be/SILSO/datafiles  
-Direct file used by the runner: https://www.sidc.be/SILSO/DATA/SN_m_tot_V2.0.csv
+Direct file: https://www.sidc.be/SILSO/DATA/SN_m_tot_V2.0.csv  
+DOI: https://doi.org/10.24414/qnza-ac80
 
-SILSO asks users to credit the source and provides DOI-based citation guidance. See https://www.sidc.be/SILSO/infosnmtot and DOI https://doi.org/10.24414/qnza-ac80.
+The official monthly series starts in January 1749 and is updated through the latest elapsed month.
 
-## License/use boundary
-The SILSO data service specifies non-commercial attribution terms. This repository contains code, not a redistributed copy of the dataset. Users should verify current SILSO terms before redistribution or commercial use.
+## License and credit
 
-## Fields used
-The semicolon-delimited source contains calendar year, month, decimal date and monthly mean sunspot number among additional metadata. The runner uses decimal date and the monthly mean total sunspot number.
+SILSO states that the Sunspot Number data are licensed **CC BY-NC 4.0**. Publications using the data should explicitly credit WDC-SILSO, Royal Observatory of Belgium, Brussels, and the Version 2 DOI.
+
+This repository contains code and generated metrics, not a redistributed copy of the SILSO source file.
+
+## Fields
+
+The semicolon-delimited CSV provides year, month, decimal date, monthly mean sunspot number, standard deviation, number of observations and a definitive/provisional indicator.
 
 ## Data integrity
-The raw response bytes are hashed with SHA-256 and the hash is written into the results. This allows a paper or later replication to state exactly which changing upstream snapshot was used.
 
-## Missing/sentinel handling
-Rows with negative monthly activity values are treated as unavailable sentinels and excluded.
+The runner records SHA-256 of the exact downloaded source bytes. It also records the first and last definitive months and the number of provisional rows excluded.
 
-## Evaluation chronology
-No random train/test split is used. Test windows come strictly after all model-development windows.
+## Definitive-only primary analysis
+
+SILSO marks the most recent values as provisional and subject to revision. To reduce evaluation drift, the primary research protocol uses only rows whose official indicator marks them definitive. This choice is recorded in the generated manifest.
+
+## Missing values
+
+A sunspot value of -1 indicates unavailable data and is excluded before modeling.
+
+## Chronology
+
+No random forecasting split is used. All test targets occur after training and validation targets, and normalization is estimated only from the training era.
