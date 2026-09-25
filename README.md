@@ -102,3 +102,8 @@ A win on one horizon does not establish general Transformer superiority. Sunspot
 ## Licensing boundary
 
 Repository source code is released under the MIT License. The WDC-SILSO source data are **not** relicensed by this repository; SILSO identifies them under CC BY-NC 4.0 with attribution requirements. Generated metrics and figures are provided as research evidence, and users should preserve SILSO attribution and assess the source-data license when reusing data-derived artifacts. See `DATA_LICENSE.md`.
+
+
+## Current evidence state
+
+The committed empirical artifacts were regenerated from the frozen SILSO study input after the final strict-QA protocol changes. CI validates that the committed results use the frozen study fingerprint, all four declared baseline uncertainty comparisons, rolling-origin evaluation semantics, three Transformer seeds, and the matched context-sensitivity training budget.
