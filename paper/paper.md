@@ -14,7 +14,7 @@ The source is WDC-SILSO's monthly mean total Sunspot Number Version 2.0, DOI `10
 
 ## Forecast design
 
-One pair of validation/test target boundaries is computed from the frozen raw timeline and reused across all 1-, 6-, and 12-month horizons. The same boundaries are reused for horizon-1 context sensitivity at 60, 132 and 264 months. Scaling uses only values available through the final training target.
+One pair of validation/test target boundaries is computed from the frozen raw timeline and reused across all 1-, 6-, and 12-month horizons. The same boundaries are reused for horizon-1 context sensitivity at 60, 132 and 264 months. Scaling uses only values available through the final training target. Evaluation is rolling-origin direct forecasting with observed history: later test targets may use earlier realized observations as context, but never future observations or the target itself.
 
 ## Baselines
 
@@ -26,7 +26,7 @@ The compact Transformer uses a 32-dimensional input projection, four attention h
 
 ## Evaluation
 
-MAE and RMSE are reported at all horizons. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap. Errors are also separated into high-activity versus other periods and early versus late halves of the common test era.
+MAE and RMSE are reported at all horizons. Transformer-versus-baseline MAE differences use a 12-month moving-block bootstrap against persistence, seasonal naive, ridge and HGB. Errors are also separated into high-activity versus other periods and early versus late halves of the common test era. Context sensitivity uses the same maximum Transformer epoch budget as the primary study.
 
 ## Results
 
