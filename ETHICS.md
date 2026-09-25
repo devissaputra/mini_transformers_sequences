@@ -8,7 +8,7 @@ A Transformer is not treated as superior because it is newer or more complex. Th
 
 ## Fair comparison boundary
 
-Every primary horizon and every context-length sensitivity condition uses common target-date boundaries. Context length changes the available history, not the target era. Fixed sinusoidal positional encoding also keeps the trainable Transformer parameter count independent of context length.
+Every primary horizon and every context-length sensitivity condition uses common target-date boundaries. Context length changes the available history, not the target era, and context-sensitivity runs use the same maximum training budget as the primary study. Fixed sinusoidal positional encoding also keeps the trainable Transformer parameter count independent of context length. The evaluation is rolling-origin with observed history, not a single fixed-origin recursive forecast.
 
 ## Forecast scope
 
