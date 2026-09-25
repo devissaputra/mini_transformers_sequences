@@ -32,6 +32,13 @@ PATIENCE = 8
 STUDY_CUTOFF_MONTH = "2026-03"
 EXPECTED_STUDY_ROWS = 3327
 EXPECTED_STUDY_INPUT_SHA256 = "02adc08ef41aca6e5a02a21417d38bd3ed1dc14ab4bb3de5df5c93488c017a9b"
+RIDGE_ALPHAS = (0.1, 1.0, 10.0, 100.0)
+HGB_CANDIDATES = (
+    {"learning_rate": 0.03, "max_leaf_nodes": 15},
+    {"learning_rate": 0.05, "max_leaf_nodes": 15},
+    {"learning_rate": 0.05, "max_leaf_nodes": 31},
+    {"learning_rate": 0.10, "max_leaf_nodes": 15},
+)
 
 
 class TransformerForecaster(nn.Module):
@@ -235,6 +242,49 @@ def error_metrics(observed, forecast) -> dict:
     }
 
 
+def select_ridge_baseline(X_train, y_train, X_val, y_val):
+    candidates = []
+    for alpha in RIDGE_ALPHAS:
+        model = Ridge(alpha=alpha).fit(X_train, y_train)
+        val_pred = model.predict(X_val)
+        val_mae = float(np.mean(np.abs(val_pred - y_val)))
+        candidates.append((val_mae, alpha, model))
+    candidates.sort(key=lambda x: (x[0], x[1]))
+    best_mae, best_alpha, best_model = candidates[0]
+    return best_model, {
+        "selected_alpha": float(best_alpha),
+        "validation_mae_scaled": float(best_mae),
+        "candidate_alphas": [float(a) for a in RIDGE_ALPHAS],
+    }
+
+
+def select_hgb_baseline(X_train, y_train, X_val, y_val):
+    candidates = []
+    for config in HGB_CANDIDATES:
+        model = HistGradientBoostingRegressor(
+            loss="squared_error",
+            max_iter=300,
+            learning_rate=config["learning_rate"],
+            max_leaf_nodes=config["max_leaf_nodes"],
+            l2_regularization=1.0,
+            early_stopping=False,
+            random_state=PRIMARY_SEED,
+        ).fit(X_train, y_train)
+        val_pred = model.predict(X_val)
+        val_mae = float(np.mean(np.abs(val_pred - y_val)))
+        candidates.append((val_mae, config, model))
+    candidates.sort(key=lambda x: (x[0], x[1]["learning_rate"], x[1]["max_leaf_nodes"]))
+    best_mae, best_config, best_model = candidates[0]
+    return best_model, {
+        "selected_learning_rate": float(best_config["learning_rate"]),
+        "selected_max_leaf_nodes": int(best_config["max_leaf_nodes"]),
+        "max_iter": 300,
+        "early_stopping": False,
+        "validation_mae_scaled": float(best_mae),
+        "candidate_grid": [dict(c) for c in HGB_CANDIDATES],
+    }
+
+
 def seasonal_naive_from_context(X_scaled, mean: float, std: float, horizon: int):
     if not 1 <= horizon <= 12:
         raise ValueError("seasonal baseline supports horizons 1..12")
@@ -335,13 +385,10 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
         "persistence": X_test[:, -1] * std + mean,
         "seasonal_naive": seasonal_naive_from_context(X_test, mean, std, horizon),
     }
-    ridge = Ridge(alpha=1.0).fit(X_train, y_train)
+    ridge, ridge_selection = select_ridge_baseline(X_train, y_train, X_val, y_val)
     forecasts["ridge"] = ridge.predict(X_test) * std + mean
 
-    hgb = HistGradientBoostingRegressor(
-        loss="squared_error", max_iter=300, learning_rate=.05,
-        max_leaf_nodes=15, l2_regularization=1.0, random_state=PRIMARY_SEED,
-    ).fit(X_train, y_train)
+    hgb, hgb_selection = select_hgb_baseline(X_train, y_train, X_val, y_val)
     forecasts["hist_gradient_boosting"] = hgb.predict(X_test) * std + mean
 
     transformer_seeds = (PRIMARY_SEED,) if quick else TRANSFORMER_SEEDS
@@ -388,6 +435,10 @@ def fit_horizon(values, dates, horizon: int, boundaries: tuple[int, int], max_ep
         "validation_windows": int(len(X_val)),
         "test_windows": int(len(X_test)),
         "metrics": metrics,
+        "baseline_selection": {
+            "ridge": ridge_selection,
+            "hist_gradient_boosting": hgb_selection,
+        },
         "transformer_vs_baseline_uncertainty": uncertainty,
         "activity_error_analysis": activity,
         "era_robustness": era,
@@ -412,7 +463,7 @@ def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, m
         X_test, y_test = split["X_test"], split["y_test"]
         mean, std = split["mean"], split["std"]
         observed = y_test * std + mean
-        ridge = Ridge(alpha=1.0).fit(X_train, y_train)
+        ridge, ridge_selection = select_ridge_baseline(X_train, y_train, X_val, y_val)
         ridge_pred = ridge.predict(X_test) * std + mean
         model, _, best_epoch = train_transformer(X_train, y_train, X_val, y_val, max_epochs=max_epochs, seed=PRIMARY_SEED)
         model.eval()
@@ -420,6 +471,7 @@ def context_sensitivity(values, boundaries: tuple[int, int], horizon: int = 1, m
             t_pred = model(torch.tensor(X_test)).cpu().numpy() * std + mean
         out[str(window)] = {
             "ridge": error_metrics(observed, ridge_pred),
+            "ridge_selected_alpha": ridge_selection["selected_alpha"],
             "transformer_seed_42": error_metrics(observed, t_pred),
             "transformer_best_epoch": int(best_epoch),
         }
@@ -545,6 +597,10 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "test_target_start_month": dates.iloc[boundaries[1]].strftime("%Y-%m"),
             "shared_target_boundaries_across_horizons_and_contexts": True,
             "positional_encoding": "fixed_sinusoidal",
+            "baseline_selection": "chronological_validation_mae",
+            "ridge_alpha_candidates": list(RIDGE_ALPHAS),
+            "hgb_candidate_grid": [dict(c) for c in HGB_CANDIDATES],
+            "hgb_internal_early_stopping": False,
         },
         "horizons": {k: _strip_plot(v) for k, v in horizons_with_plot.items()},
         "context_sensitivity_horizon_1": {"status": "skipped_in_quick_mode"} if quick else context_sensitivity(values, boundaries),
