@@ -97,33 +97,33 @@
           "mae": 16.90527831823438
         },
         "transformer_seed_42": {
-          "rmse": 21.842532282803536,
-          "mae": 15.81420171583021
+          "rmse": 21.842531401205186,
+          "mae": 15.814201400802657
         },
         "transformer_repeated_seed_summary": {
-          "mae_mean": 15.913768871410474,
-          "mae_std": 0.08625066785420828,
-          "rmse_mean": 21.97826226139573,
-          "rmse_std": 0.15521585662210544,
+          "mae_mean": 15.913768627025462,
+          "mae_std": 0.08625073027220585,
+          "rmse_mean": 21.978261542574376,
+          "rmse_std": 0.15521590368283653,
           "runs": {
             "13": {
               "metrics": {
-                "rmse": 21.94476161632566,
-                "mae": 15.965543391826275
+                "rmse": 21.944761070301787,
+                "mae": 15.965543237176385
               },
               "best_epoch": 18
             },
             "42": {
               "metrics": {
-                "rmse": 21.842532282803536,
-                "mae": 15.81420171583021
+                "rmse": 21.842531401205186,
+                "mae": 15.814201400802657
               },
               "best_epoch": 21
             },
             "73": {
               "metrics": {
-                "rmse": 22.147492885057996,
-                "mae": 15.961561506574935
+                "rmse": 22.147492156216153,
+                "mae": 15.961561243097345
               },
               "best_epoch": 9
             }
@@ -169,37 +169,37 @@
       },
       "transformer_vs_baseline_uncertainty": {
         "persistence": {
-          "mean_mae_delta_a_minus_b": -2.220031698186834,
+          "mean_mae_delta_a_minus_b": -2.2200320132143863,
           "moving_block_bootstrap_95_interval": [
-            -2.8749196818640996,
-            -1.5235831946582055
+            -2.874919769069454,
+            -1.5235834211916541
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "seasonal_naive": {
-          "mean_mae_delta_a_minus_b": -21.70051219012286,
+          "mean_mae_delta_a_minus_b": -21.700512505150414,
           "moving_block_bootstrap_95_interval": [
-            -26.05891087491949,
-            -17.23828950357867
+            -26.05891053196904,
+            -17.23828973498073
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "ridge": {
-          "mean_mae_delta_a_minus_b": -1.1663972722875464,
+          "mean_mae_delta_a_minus_b": -1.1663975873150982,
           "moving_block_bootstrap_95_interval": [
-            -1.8793060007754032,
-            -0.5371590999511632
+            -1.879306301913104,
+            -0.5371595401305699
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "hist_gradient_boosting": {
-          "mean_mae_delta_a_minus_b": -1.0910766024041674,
+          "mean_mae_delta_a_minus_b": -1.0910769174317194,
           "moving_block_bootstrap_95_interval": [
-            -1.8694386859116534,
-            -0.4657854268424385
+            -1.8694393161099516,
+            -0.46578592730666313
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
@@ -209,35 +209,35 @@
         "persistence": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -2.06869002219077,
+              "mean_mae_delta_a_minus_b": -2.068690176840659,
               "moving_block_bootstrap_95_interval": [
-                -2.7669238312466367,
-                -1.314714529707625
+                -2.766924208134144,
+                -1.3147147485085795
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -2.220031698186834,
+              "mean_mae_delta_a_minus_b": -2.2200320132143863,
               "moving_block_bootstrap_95_interval": [
-                -2.8874033870639746,
-                -1.521810469469867
+                -2.887403758510097,
+                -1.5218105632621608
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -2.07267190744211,
+              "mean_mae_delta_a_minus_b": -2.072672170919699,
               "moving_block_bootstrap_95_interval": [
-                -2.7302071617172285,
-                -1.3746429576530115
+                -2.730207709006003,
+                -1.3746433041833186
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -2.1204645426065714,
-          "std_delta_across_seeds": 0.08625066785420801,
+          "mean_delta_across_seeds": -2.1204647869915814,
+          "std_delta_across_seeds": 0.08625073027220558,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -245,35 +245,35 @@
         "seasonal_naive": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -21.549170514126796,
+              "mean_mae_delta_a_minus_b": -21.549170668776686,
               "moving_block_bootstrap_95_interval": [
-                -26.248927119830707,
-                -17.05589552297965
+                -26.24892742598021,
+                -17.055895064041785
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -21.70051219012286,
+              "mean_mae_delta_a_minus_b": -21.700512505150414,
               "moving_block_bootstrap_95_interval": [
-                -26.20487611229355,
-                -16.89614200463167
+                -26.204876080361217,
+                -16.89614238309431
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -21.55315239937814,
+              "mean_mae_delta_a_minus_b": -21.553152662855727,
               "moving_block_bootstrap_95_interval": [
-                -26.341503062405742,
-                -17.057568571302628
+                -26.341503373423855,
+                -17.05756907964254
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -21.6009450345426,
-          "std_delta_across_seeds": 0.08625066785420778,
+          "mean_delta_across_seeds": -21.600945278927608,
+          "std_delta_across_seeds": 0.08625073027220585,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -281,35 +281,35 @@
         "ridge": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -1.015055596291482,
+              "mean_mae_delta_a_minus_b": -1.0150557509413711,
               "moving_block_bootstrap_95_interval": [
-                -1.6734297622073522,
-                -0.44000599878328356
+                -1.673430279568509,
+                -0.44000593162513724
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -1.1663972722875464,
+              "mean_mae_delta_a_minus_b": -1.1663975873150982,
               "moving_block_bootstrap_95_interval": [
-                -1.8682674459508948,
-                -0.5080340345342604
+                -1.8682680051247995,
+                -0.5080343111857288
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -1.019037481542822,
+              "mean_mae_delta_a_minus_b": -1.0190377450204111,
               "moving_block_bootstrap_95_interval": [
-                -1.833382372956376,
-                -0.2996344501907771
+                -1.8333830207675785,
+                -0.2996347543355591
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -1.0668301167072836,
-          "std_delta_across_seeds": 0.08625066785420808,
+          "mean_delta_across_seeds": -1.0668303610922936,
+          "std_delta_across_seeds": 0.08625073027220558,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -317,35 +317,35 @@
         "hist_gradient_boosting": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -0.939734926408103,
+              "mean_mae_delta_a_minus_b": -0.9397350810579921,
               "moving_block_bootstrap_95_interval": [
-                -1.6767235508337548,
-                -0.30200237802974417
+                -1.67672378352456,
+                -0.30200165862137096
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -1.0910766024041674,
+              "mean_mae_delta_a_minus_b": -1.0910769174317194,
               "moving_block_bootstrap_95_interval": [
-                -1.8653449576582888,
-                -0.45833948229015437
+                -1.8653450182294953,
+                -0.4583394937457017
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -0.9437168116594431,
+              "mean_mae_delta_a_minus_b": -0.9437170751370321,
               "moving_block_bootstrap_95_interval": [
-                -1.694676912387711,
-                -0.3235502392115263
+                -1.6946774263122037,
+                -0.3235508344704052
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -0.9915094468239044,
-          "std_delta_across_seeds": 0.08625066785420804,
+          "mean_delta_across_seeds": -0.9915096912089144,
+          "std_delta_across_seeds": 0.0862507302722057,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -371,8 +371,8 @@
           "mae_other": 12.132023504081554
         },
         "transformer_seed_42": {
-          "mae_high_activity": 24.19326775259079,
-          "mae_other": 11.709021711242812
+          "mae_high_activity": 24.193266324256655,
+          "mae_other": 11.709021941660769
         }
       },
       "era_robustness": {
@@ -394,8 +394,8 @@
             "mae": 19.305175077809725
           },
           "transformer_seed_42": {
-            "rmse": 23.677561462799936,
-            "mae": 17.915500239924985
+            "rmse": 23.677560415222,
+            "mae": 17.91550020555834
           }
         },
         "late_test": {
@@ -416,155 +416,155 @@
             "mae": 14.50538155865903
           },
           "transformer_seed_42": {
-            "rmse": 19.838485734197565,
-            "mae": 13.712903191735437
+            "rmse": 19.838485043187678,
+            "mae": 13.712902596046975
           }
         }
       },
       "training_history_seed_42": [
         {
           "epoch": 1,
-          "train_mse": 0.29858776839340434,
-          "val_mse": 0.27372443675994873
+          "train_mse": 0.2985877754057155,
+          "val_mse": 0.27372437715530396
         },
         {
           "epoch": 2,
-          "train_mse": 0.1901322388473679,
+          "train_mse": 0.19013223818996372,
           "val_mse": 0.2323404848575592
         },
         {
           "epoch": 3,
-          "train_mse": 0.17824653623735204,
+          "train_mse": 0.17824653536081314,
           "val_mse": 0.23710401356220245
         },
         {
           "epoch": 4,
-          "train_mse": 0.17424083939369986,
+          "train_mse": 0.1742408396128346,
           "val_mse": 0.20952482521533966
         },
         {
           "epoch": 5,
-          "train_mse": 0.17804664724013386,
-          "val_mse": 0.20574958622455597
+          "train_mse": 0.17804664285743937,
+          "val_mse": 0.20574957132339478
         },
         {
           "epoch": 6,
-          "train_mse": 0.17038807798834407,
+          "train_mse": 0.1703880773309399,
           "val_mse": 0.21915368735790253
         },
         {
           "epoch": 7,
-          "train_mse": 0.16456582375309048,
+          "train_mse": 0.1645658176173182,
           "val_mse": 0.20573969185352325
         },
         {
           "epoch": 8,
-          "train_mse": 0.1626050242168062,
-          "val_mse": 0.20212529599666595
+          "train_mse": 0.16260502487421036,
+          "val_mse": 0.20212528109550476
         },
         {
           "epoch": 9,
-          "train_mse": 0.16066746369880788,
+          "train_mse": 0.16066746457534678,
           "val_mse": 0.2238243818283081
         },
         {
           "epoch": 10,
-          "train_mse": 0.15251135409754865,
+          "train_mse": 0.1525113534401445,
           "val_mse": 0.20744386315345764
         },
         {
           "epoch": 11,
-          "train_mse": 0.15404867074068854,
-          "val_mse": 0.19219698011875153
+          "train_mse": 0.15404867512338302,
+          "val_mse": 0.19219696521759033
         },
         {
           "epoch": 12,
-          "train_mse": 0.15588566091130762,
+          "train_mse": 0.15588565762428677,
           "val_mse": 0.19738951325416565
         },
         {
           "epoch": 13,
-          "train_mse": 0.15294866055688439,
-          "val_mse": 0.1870284229516983
+          "train_mse": 0.15294866954140804,
+          "val_mse": 0.1870284527540207
         },
         {
           "epoch": 14,
-          "train_mse": 0.15121648745501742,
+          "train_mse": 0.15121648898896048,
           "val_mse": 0.19049540162086487
         },
         {
           "epoch": 15,
-          "train_mse": 0.1478619058342541,
+          "train_mse": 0.1478619101073812,
           "val_mse": 0.19312919676303864
         },
         {
           "epoch": 16,
           "train_mse": 0.1514546303626369,
-          "val_mse": 0.18909966945648193
+          "val_mse": 0.18909963965415955
         },
         {
           "epoch": 17,
-          "train_mse": 0.15375382584684036,
-          "val_mse": 0.2068810611963272
+          "train_mse": 0.1537538271616487,
+          "val_mse": 0.2068810909986496
         },
         {
           "epoch": 18,
-          "train_mse": 0.1482282421168159,
-          "val_mse": 0.18687936663627625
+          "train_mse": 0.14822825000566595,
+          "val_mse": 0.18687935173511505
         },
         {
           "epoch": 19,
-          "train_mse": 0.1527019338134457,
+          "train_mse": 0.15270193622392766,
           "val_mse": 0.1882014274597168
         },
         {
           "epoch": 20,
-          "train_mse": 0.14728188448969057,
+          "train_mse": 0.1472818820792086,
           "val_mse": 0.2067192792892456
         },
         {
           "epoch": 21,
-          "train_mse": 0.14893654646242366,
+          "train_mse": 0.1489365429562681,
           "val_mse": 0.18315356969833374
         },
         {
           "epoch": 22,
-          "train_mse": 0.15529754297698245,
-          "val_mse": 0.18485766649246216
+          "train_mse": 0.1552975445109255,
+          "val_mse": 0.18485765159130096
         },
         {
           "epoch": 23,
-          "train_mse": 0.14514322096810622,
+          "train_mse": 0.14514322052983678,
           "val_mse": 0.18903683125972748
         },
         {
           "epoch": 24,
-          "train_mse": 0.14673087417202837,
-          "val_mse": 0.18876530230045319
+          "train_mse": 0.14673087373375893,
+          "val_mse": 0.1887652575969696
         },
         {
           "epoch": 25,
-          "train_mse": 0.1526606085107607,
+          "train_mse": 0.15266060719595237,
           "val_mse": 0.1856072098016739
         },
         {
           "epoch": 26,
-          "train_mse": 0.15519605839953704,
+          "train_mse": 0.15519605971434536,
           "val_mse": 0.20719951391220093
         },
         {
           "epoch": 27,
-          "train_mse": 0.15249722253750353,
-          "val_mse": 0.18631739914417267
+          "train_mse": 0.1524972251671202,
+          "val_mse": 0.18631742894649506
         },
         {
           "epoch": 28,
           "train_mse": 0.15973710290649357,
-          "val_mse": 0.18796023726463318
+          "val_mse": 0.18796026706695557
         },
         {
           "epoch": 29,
-          "train_mse": 0.15247987057356274,
+          "train_mse": 0.1524798637803863,
           "val_mse": 0.2184036672115326
         }
       ]
@@ -592,33 +592,33 @@
           "mae": 20.537293415179263
         },
         "transformer_seed_42": {
-          "rmse": 26.75842352282075,
-          "mae": 19.289702040297133
+          "rmse": 26.75842382252087,
+          "mae": 19.289701805458414
         },
         "transformer_repeated_seed_summary": {
-          "mae_mean": 19.69880894688634,
-          "mae_std": 0.5950798627876702,
-          "rmse_mean": 26.792128029226642,
-          "rmse_std": 0.6734505513590873,
+          "mae_mean": 19.691348204741605,
+          "mae_std": 0.5822433299865193,
+          "rmse_mean": 26.789188856396077,
+          "rmse_std": 0.6689395414531398,
           "runs": {
             "13": {
               "metrics": {
-                "rmse": 27.481797976765733,
-                "mae": 20.38147713257386
+                "rmse": 27.47298011402872,
+                "mae": 20.35909476294532
               },
               "best_epoch": 27
             },
             "42": {
               "metrics": {
-                "rmse": 26.75842352282075,
-                "mae": 19.289702040297133
+                "rmse": 26.75842382252087,
+                "mae": 19.289701805458414
               },
               "best_epoch": 22
             },
             "73": {
               "metrics": {
-                "rmse": 26.136162588093438,
-                "mae": 19.425247667788028
+                "rmse": 26.136162632638637,
+                "mae": 19.42524804582109
               },
               "best_epoch": 29
             }
@@ -664,37 +664,37 @@
       },
       "transformer_vs_baseline_uncertainty": {
         "persistence": {
-          "mean_mae_delta_a_minus_b": -7.569757054875921,
+          "mean_mae_delta_a_minus_b": -7.569757289714642,
           "moving_block_bootstrap_95_interval": [
-            -9.463441827275732,
-            -5.549446077747749
+            -9.463442149033419,
+            -5.5494460821867735
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "seasonal_naive": {
-          "mean_mae_delta_a_minus_b": -18.22501186565594,
+          "mean_mae_delta_a_minus_b": -18.22501210049466,
           "moving_block_bootstrap_95_interval": [
-            -22.676085862884293,
-            -13.849543676863206
+            -22.67608680309834,
+            -13.849543923014279
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "ridge": {
-          "mean_mae_delta_a_minus_b": -4.04285237309453,
+          "mean_mae_delta_a_minus_b": -4.04285260793325,
           "moving_block_bootstrap_95_interval": [
-            -5.820765107959598,
-            -2.270164549171746
+            -5.82076475641749,
+            -2.270164196340888
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "hist_gradient_boosting": {
-          "mean_mae_delta_a_minus_b": -1.247591374882129,
+          "mean_mae_delta_a_minus_b": -1.2475916097208495,
           "moving_block_bootstrap_95_interval": [
-            -2.6297710642979903,
-            0.040536841506864485
+            -2.62977066192189,
+            0.04053670289474162
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
@@ -704,35 +704,35 @@
         "persistence": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -6.477981962599196,
+              "mean_mae_delta_a_minus_b": -6.500364332227735,
               "moving_block_bootstrap_95_interval": [
-                -8.541605442780273,
-                -4.158288904424904
+                -8.558527244676698,
+                -4.18657718062759
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -7.569757054875921,
+              "mean_mae_delta_a_minus_b": -7.569757289714642,
               "moving_block_bootstrap_95_interval": [
-                -9.618992795743742,
-                -5.337859635166937
+                -9.618993499114348,
+                -5.3378596009434895
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -7.434211427385026,
+              "mean_mae_delta_a_minus_b": -7.434211049351965,
               "moving_block_bootstrap_95_interval": [
-                -9.623474942170107,
-                -5.0769978852601385
+                -9.623474936585527,
+                -5.076997291433202
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -7.160650148286714,
-          "std_delta_across_seeds": 0.5950798627876693,
+          "mean_delta_across_seeds": -7.168110890431447,
+          "std_delta_across_seeds": 0.58224332998652,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -740,35 +740,35 @@
         "seasonal_naive": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -17.133236773379213,
+              "mean_mae_delta_a_minus_b": -17.155619143007755,
               "moving_block_bootstrap_95_interval": [
-                -21.923680906038026,
-                -12.297398659130476
+                -21.937443220436393,
+                -12.325208807134773
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -18.22501186565594,
+              "mean_mae_delta_a_minus_b": -18.22501210049466,
               "moving_block_bootstrap_95_interval": [
-                -22.74762301201577,
-                -13.364189731609361
+                -22.747623036358807,
+                -13.364189475577877
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -18.089466238165045,
+              "mean_mae_delta_a_minus_b": -18.089465860131984,
               "moving_block_bootstrap_95_interval": [
-                -22.770076693428887,
-                -13.364920299547219
+                -22.770077269786114,
+                -13.364919625388257
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -17.81590495906673,
-          "std_delta_across_seeds": 0.5950798627876702,
+          "mean_delta_across_seeds": -17.82336570121147,
+          "std_delta_across_seeds": 0.5822433299865193,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -776,35 +776,35 @@
         "ridge": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -2.951077280817805,
+              "mean_mae_delta_a_minus_b": -2.973459650446345,
               "moving_block_bootstrap_95_interval": [
-                -4.627482623022956,
-                -1.1178397058366656
+                -4.661665838831538,
+                -1.1372212548871656
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -4.04285237309453,
+              "mean_mae_delta_a_minus_b": -4.04285260793325,
               "moving_block_bootstrap_95_interval": [
-                -5.698160987716538,
-                -2.325300858615043
+                -5.698161223700813,
+                -2.3253009430997045
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -3.907306745603636,
+              "mean_mae_delta_a_minus_b": -3.9073063675705737,
               "moving_block_bootstrap_95_interval": [
-                -5.323152631610721,
-                -2.4997216221806533
+                -5.3231522835052765,
+                -2.4997212984182466
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -3.633745466505324,
-          "std_delta_across_seeds": 0.5950798627876693,
+          "mean_delta_across_seeds": -3.6412062086500563,
+          "std_delta_across_seeds": 0.5822433299865195,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -812,35 +812,35 @@
         "hist_gradient_boosting": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -0.1558162826054039,
+              "mean_mae_delta_a_minus_b": -0.17819865223394357,
               "moving_block_bootstrap_95_interval": [
-                -1.284598057836411,
-                0.9672793073469962
+                -1.3181840136617005,
+                0.9543302597798502
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -1.247591374882129,
+              "mean_mae_delta_a_minus_b": -1.2475916097208495,
               "moving_block_bootstrap_95_interval": [
-                -2.6294093262038465,
-                0.04283335340767136
+                -2.629409456081114,
+                0.04283353068226651
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -1.1120457473912349,
+              "mean_mae_delta_a_minus_b": -1.1120453693581724,
               "moving_block_bootstrap_95_interval": [
-                -2.2931039382780916,
-                -0.013764353586269658
+                -2.293103087846896,
+                -0.013764720163784673
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -0.8384844682929226,
-          "std_delta_across_seeds": 0.5950798627876693,
+          "mean_delta_across_seeds": -0.8459452104376552,
+          "std_delta_across_seeds": 0.5822433299865196,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -866,8 +866,8 @@
           "mae_other": 14.980515714358356
         },
         "transformer_seed_42": {
-          "mae_high_activity": 28.50407204127203,
-          "mae_other": 14.77527915391346
+          "mae_high_activity": 28.504070926474654,
+          "mae_other": 14.775279350195422
         }
       },
       "era_robustness": {
@@ -889,8 +889,8 @@
             "mae": 23.22517951368387
           },
           "transformer_seed_42": {
-            "rmse": 29.35791690327206,
-            "mae": 22.14445623907599
+            "rmse": 29.357916088547796,
+            "mae": 22.14445550592096
           }
         },
         "late_test": {
@@ -911,161 +911,161 @@
             "mae": 17.849407316674657
           },
           "transformer_seed_42": {
-            "rmse": 23.877587272458378,
-            "mae": 16.434947841518277
+            "rmse": 23.87758894589426,
+            "mae": 16.434948104995865
           }
         }
       },
       "training_history_seed_42": [
         {
           "epoch": 1,
-          "train_mse": 0.41678397817646756,
-          "val_mse": 0.576282262802124
+          "train_mse": 0.4167839766425245,
+          "val_mse": 0.5762822031974792
         },
         {
           "epoch": 2,
-          "train_mse": 0.31598714958218965,
-          "val_mse": 0.4575759768486023
+          "train_mse": 0.31598714125507016,
+          "val_mse": 0.45757606625556946
         },
         {
           "epoch": 3,
-          "train_mse": 0.2832675580592716,
+          "train_mse": 0.2832675620036967,
           "val_mse": 0.396249383687973
         },
         {
           "epoch": 4,
-          "train_mse": 0.265774130821228,
+          "train_mse": 0.2657741334508447,
           "val_mse": 0.36456871032714844
         },
         {
           "epoch": 5,
-          "train_mse": 0.2546251372379415,
+          "train_mse": 0.2546251424971749,
           "val_mse": 0.36427173018455505
         },
         {
           "epoch": 6,
-          "train_mse": 0.2522126898607787,
+          "train_mse": 0.25221268854597034,
           "val_mse": 0.358791708946228
         },
         {
           "epoch": 7,
-          "train_mse": 0.24032231091576464,
+          "train_mse": 0.2403223113540341,
           "val_mse": 0.35433536767959595
         },
         {
           "epoch": 8,
-          "train_mse": 0.24031542241573334,
+          "train_mse": 0.24031542153919444,
           "val_mse": 0.33769282698631287
         },
         {
           "epoch": 9,
-          "train_mse": 0.23321818297400193,
+          "train_mse": 0.23321818867150476,
           "val_mse": 0.3124758005142212
         },
         {
           "epoch": 10,
-          "train_mse": 0.22518902184332118,
-          "val_mse": 0.3431861996650696
+          "train_mse": 0.22518902381553368,
+          "val_mse": 0.3431861400604248
         },
         {
           "epoch": 11,
-          "train_mse": 0.23006647255490809,
-          "val_mse": 0.31224316358566284
+          "train_mse": 0.23006646641913583,
+          "val_mse": 0.31224313378334045
         },
         {
           "epoch": 12,
-          "train_mse": 0.2225523527492495,
-          "val_mse": 0.30396729707717896
+          "train_mse": 0.22255235209184535,
+          "val_mse": 0.3039672374725342
         },
         {
           "epoch": 13,
-          "train_mse": 0.21287254244089127,
-          "val_mse": 0.29980936646461487
+          "train_mse": 0.21287253915387042,
+          "val_mse": 0.29980939626693726
         },
         {
           "epoch": 14,
-          "train_mse": 0.21065853010205662,
-          "val_mse": 0.3254988193511963
+          "train_mse": 0.2106585327316733,
+          "val_mse": 0.3254987597465515
         },
         {
           "epoch": 15,
-          "train_mse": 0.2121544585508459,
-          "val_mse": 0.2974797189235687
+          "train_mse": 0.21215446315267505,
+          "val_mse": 0.2974797785282135
         },
         {
           "epoch": 16,
-          "train_mse": 0.2157055119819501,
-          "val_mse": 0.286609023809433
+          "train_mse": 0.21570551176281536,
+          "val_mse": 0.28660905361175537
         },
         {
           "epoch": 17,
-          "train_mse": 0.20695479783941717,
+          "train_mse": 0.20695480791961446,
           "val_mse": 0.34559690952301025
         },
         {
           "epoch": 18,
-          "train_mse": 0.21266313642263412,
-          "val_mse": 0.27994823455810547
+          "train_mse": 0.21266313949052026,
+          "val_mse": 0.27994826436042786
         },
         {
           "epoch": 19,
-          "train_mse": 0.2069228471202009,
-          "val_mse": 0.3033558130264282
+          "train_mse": 0.206922856542994,
+          "val_mse": 0.30335578322410583
         },
         {
           "epoch": 20,
-          "train_mse": 0.2211413639871513,
+          "train_mse": 0.22114136267234297,
           "val_mse": 0.2942298650741577
         },
         {
           "epoch": 21,
-          "train_mse": 0.1971101107842782,
-          "val_mse": 0.2799312174320221
+          "train_mse": 0.19711011034600875,
+          "val_mse": 0.2799312472343445
         },
         {
           "epoch": 22,
-          "train_mse": 0.1944822145297247,
+          "train_mse": 0.19448221606366775,
           "val_mse": 0.2692660987377167
         },
         {
           "epoch": 23,
-          "train_mse": 0.19841916026437983,
+          "train_mse": 0.19841915281379924,
           "val_mse": 0.2815617620944977
         },
         {
           "epoch": 24,
-          "train_mse": 0.19420807677156784,
-          "val_mse": 0.2917729318141937
+          "train_mse": 0.19420807216973865,
+          "val_mse": 0.29177290201187134
         },
         {
           "epoch": 25,
-          "train_mse": 0.19548435794080005,
-          "val_mse": 0.29585370421409607
+          "train_mse": 0.1954843864283141,
+          "val_mse": 0.29585352540016174
         },
         {
           "epoch": 26,
-          "train_mse": 0.19649883688372724,
-          "val_mse": 0.28882864117622375
+          "train_mse": 0.19649873980704477,
+          "val_mse": 0.28882816433906555
         },
         {
           "epoch": 27,
-          "train_mse": 0.19420717897660592,
-          "val_mse": 0.28292223811149597
+          "train_mse": 0.1942071938777671,
+          "val_mse": 0.2829221785068512
         },
         {
           "epoch": 28,
-          "train_mse": 0.1897412264610038,
-          "val_mse": 0.2797802984714508
+          "train_mse": 0.18974124004735665,
+          "val_mse": 0.2797803580760956
         },
         {
           "epoch": 29,
-          "train_mse": 0.1999145958791761,
-          "val_mse": 0.26992136240005493
+          "train_mse": 0.19991457593791626,
+          "val_mse": 0.26992133259773254
         },
         {
           "epoch": 30,
-          "train_mse": 0.19784127570250454,
-          "val_mse": 0.2738463878631592
+          "train_mse": 0.1978412090855486,
+          "val_mse": 0.27384787797927856
         }
       ]
     },
@@ -1092,33 +1092,33 @@
           "mae": 23.97272047251438
         },
         "transformer_seed_42": {
-          "rmse": 30.894050861855114,
-          "mae": 22.923642997627145
+          "rmse": 30.894050265256322,
+          "mae": 22.923642808610612
         },
         "transformer_repeated_seed_summary": {
-          "mae_mean": 24.206205192390268,
-          "mae_std": 2.964785781571075,
-          "rmse_mean": 31.618067073960162,
-          "rmse_std": 2.434174430660698,
+          "mae_mean": 24.2062053814068,
+          "mae_std": 2.9647867539225103,
+          "rmse_mean": 31.618067666581847,
+          "rmse_std": 2.434175716453001,
           "runs": {
             "13": {
               "metrics": {
-                "rmse": 34.3321073975512,
-                "mae": 27.59634612487243
+                "rmse": 34.33210964092567,
+                "mae": 27.596347419349282
               },
               "best_epoch": 7
             },
             "42": {
               "metrics": {
-                "rmse": 30.894050861855114,
-                "mae": 22.923642997627145
+                "rmse": 30.894050265256322,
+                "mae": 22.923642808610612
               },
               "best_epoch": 18
             },
             "73": {
               "metrics": {
-                "rmse": 29.628042962474176,
-                "mae": 22.098626454671223
+                "rmse": 29.628043093563548,
+                "mae": 22.0986259162605
               },
               "best_epoch": 26
             }
@@ -1164,37 +1164,37 @@
       },
       "transformer_vs_baseline_uncertainty": {
         "persistence": {
-          "mean_mae_delta_a_minus_b": -14.591070908325928,
+          "mean_mae_delta_a_minus_b": -14.591071097342459,
           "moving_block_bootstrap_95_interval": [
-            -19.171317152074867,
-            -9.773661175719253
+            -19.171317313884472,
+            -9.77366098297967
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "seasonal_naive": {
-          "mean_mae_delta_a_minus_b": -14.591070908325928,
+          "mean_mae_delta_a_minus_b": -14.591071097342459,
           "moving_block_bootstrap_95_interval": [
-            -19.171317152074867,
-            -9.773661175719253
+            -19.171317313884472,
+            -9.77366098297967
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "ridge": {
-          "mean_mae_delta_a_minus_b": -5.026310419535136,
+          "mean_mae_delta_a_minus_b": -5.026310608551667,
           "moving_block_bootstrap_95_interval": [
-            -7.348299286386988,
-            -2.3035214707658125
+            -7.3482993293452905,
+            -2.3035218379161044
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
         },
         "hist_gradient_boosting": {
-          "mean_mae_delta_a_minus_b": -1.0490774748872356,
+          "mean_mae_delta_a_minus_b": -1.0490776639037667,
           "moving_block_bootstrap_95_interval": [
-            -2.4915858511407234,
-            0.5379610734953169
+            -2.491585034217003,
+            0.5379611429445726
           ],
           "block_months": 12,
           "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
@@ -1204,35 +1204,35 @@
         "persistence": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -9.918367781080642,
+              "mean_mae_delta_a_minus_b": -9.91836648660379,
               "moving_block_bootstrap_95_interval": [
-                -15.31672856929424,
-                -4.101246797143521
+                -15.316726973966077,
+                -4.101245046735887
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -14.591070908325928,
+              "mean_mae_delta_a_minus_b": -14.591071097342459,
               "moving_block_bootstrap_95_interval": [
-                -19.17995667500539,
-                -9.118806869776044
+                -19.179956848843318,
+                -9.118808046260757
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -15.416087451281848,
+              "mean_mae_delta_a_minus_b": -15.416087989692574,
               "moving_block_bootstrap_95_interval": [
-                -20.46044010127987,
-                -10.11226033677568
+                -20.460440859350715,
+                -10.112260204750497
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -13.308508713562807,
-          "std_delta_across_seeds": 2.9647857815710754,
+          "mean_delta_across_seeds": -13.308508524546275,
+          "std_delta_across_seeds": 2.96478675392251,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -1240,35 +1240,35 @@
         "seasonal_naive": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -9.918367781080642,
+              "mean_mae_delta_a_minus_b": -9.91836648660379,
               "moving_block_bootstrap_95_interval": [
-                -15.31672856929424,
-                -4.101246797143521
+                -15.316726973966077,
+                -4.101245046735887
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -14.591070908325928,
+              "mean_mae_delta_a_minus_b": -14.591071097342459,
               "moving_block_bootstrap_95_interval": [
-                -19.17995667500539,
-                -9.118806869776044
+                -19.179956848843318,
+                -9.118808046260757
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -15.416087451281848,
+              "mean_mae_delta_a_minus_b": -15.416087989692574,
               "moving_block_bootstrap_95_interval": [
-                -20.46044010127987,
-                -10.11226033677568
+                -20.460440859350715,
+                -10.112260204750497
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -13.308508713562807,
-          "std_delta_across_seeds": 2.9647857815710754,
+          "mean_delta_across_seeds": -13.308508524546275,
+          "std_delta_across_seeds": 2.96478675392251,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -1276,35 +1276,35 @@
         "ridge": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": -0.35360729228984844,
+              "mean_mae_delta_a_minus_b": -0.35360599781299856,
               "moving_block_bootstrap_95_interval": [
-                -3.3783899453309205,
-                2.7914805717296423
+                -3.378388863068085,
+                2.7914825067147833
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -5.026310419535136,
+              "mean_mae_delta_a_minus_b": -5.026310608551667,
               "moving_block_bootstrap_95_interval": [
-                -7.482028665914908,
-                -2.2488576379266227
+                -7.48202798130276,
+                -2.2488577809777706
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -5.851326962491055,
+              "mean_mae_delta_a_minus_b": -5.851327500901781,
               "moving_block_bootstrap_95_interval": [
-                -8.356085500058468,
-                -3.0794568177816037
+                -8.35608552082165,
+                -3.0794576140853382
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": -3.743748224772013,
-          "std_delta_across_seeds": 2.964785781571076,
+          "mean_delta_across_seeds": -3.743748035755482,
+          "std_delta_across_seeds": 2.96478675392251,
           "seeds_favoring_transformer": 3,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -1312,35 +1312,35 @@
         "hist_gradient_boosting": {
           "per_seed": {
             "13": {
-              "mean_mae_delta_a_minus_b": 3.6236256523580526,
+              "mean_mae_delta_a_minus_b": 3.6236269468349023,
               "moving_block_bootstrap_95_interval": [
-                1.0774502972201607,
-                6.27462958442719
+                1.0774513259283125,
+                6.274632294380109
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "42": {
-              "mean_mae_delta_a_minus_b": -1.0490774748872356,
+              "mean_mae_delta_a_minus_b": -1.0490776639037667,
               "moving_block_bootstrap_95_interval": [
-                -2.46662552449273,
-                0.528139274420036
+                -2.4666251965776875,
+                0.5281388532854768
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             },
             "73": {
-              "mean_mae_delta_a_minus_b": -1.8740940178431553,
+              "mean_mae_delta_a_minus_b": -1.8740945562538804,
               "moving_block_bootstrap_95_interval": [
-                -3.43282551887979,
-                -0.15672569401967226
+                -3.4328258671284297,
+                -0.15672795820860486
               ],
               "block_months": 12,
               "interpretation": "Negative values favor forecast A. Interval is a serial-dependence-aware descriptive uncertainty summary, not a universal significance claim."
             }
           },
-          "mean_delta_across_seeds": 0.23348471987588715,
-          "std_delta_across_seeds": 2.9647857815710763,
+          "mean_delta_across_seeds": 0.23348490889241838,
+          "std_delta_across_seeds": 2.96478675392251,
           "seeds_favoring_transformer": 2,
           "n_seeds": 3,
           "interpretation": "Seed-level paired block-bootstrap summaries plus observed across-seed delta spread; descriptive robustness, not independent-replication inference."
@@ -1366,8 +1366,8 @@
           "mae_other": 18.31150226106588
         },
         "transformer_seed_42": {
-          "mae_high_activity": 33.77575225481704,
-          "mae_other": 17.606837791084445
+          "mae_high_activity": 33.77575035617776,
+          "mae_other": 17.60683843966832
         }
       },
       "era_robustness": {
@@ -1389,8 +1389,8 @@
             "mae": 27.177459850474214
           },
           "transformer_seed_42": {
-            "rmse": 35.33924799196602,
-            "mae": 26.442852741963154
+            "rmse": 35.33924764135894,
+            "mae": 26.442852730507607
           }
         },
         "late_test": {
@@ -1411,31 +1411,31 @@
             "mae": 20.767981094554546
           },
           "transformer_seed_42": {
-            "rmse": 25.69089933560341,
-            "mae": 19.40443325329113
+            "rmse": 25.690898383028095,
+            "mae": 19.404432886713618
           }
         }
       },
       "training_history_seed_42": [
         {
           "epoch": 1,
-          "train_mse": 0.6032342437435599,
-          "val_mse": 0.8231184482574463
+          "train_mse": 0.6032342376077876,
+          "val_mse": 0.8231183886528015
         },
         {
           "epoch": 2,
-          "train_mse": 0.41032496007049785,
-          "val_mse": 0.5489508509635925
+          "train_mse": 0.41032496445319233,
+          "val_mse": 0.5489507913589478
         },
         {
           "epoch": 3,
-          "train_mse": 0.3444030447041287,
+          "train_mse": 0.34440304119797316,
           "val_mse": 0.436191588640213
         },
         {
           "epoch": 4,
-          "train_mse": 0.33217986979905295,
-          "val_mse": 0.4061697721481323
+          "train_mse": 0.3321798662928974,
+          "val_mse": 0.4061698019504547
         },
         {
           "epoch": 5,
@@ -1444,108 +1444,108 @@
         },
         {
           "epoch": 6,
-          "train_mse": 0.31241487711668015,
+          "train_mse": 0.31241488193764405,
           "val_mse": 0.41611456871032715
         },
         {
           "epoch": 7,
-          "train_mse": 0.29343829479287653,
+          "train_mse": 0.2934382965459543,
           "val_mse": 0.36876678466796875
         },
         {
           "epoch": 8,
-          "train_mse": 0.31032681333668094,
+          "train_mse": 0.31032681421321984,
           "val_mse": 0.39164814352989197
         },
         {
           "epoch": 9,
-          "train_mse": 0.27729639432886066,
-          "val_mse": 0.3654308617115021
+          "train_mse": 0.27729638950789676,
+          "val_mse": 0.36543095111846924
         },
         {
           "epoch": 10,
-          "train_mse": 0.2833581750883776,
+          "train_mse": 0.2833581632551025,
           "val_mse": 0.37547317147254944
         },
         {
           "epoch": 11,
-          "train_mse": 0.2757927012794158,
+          "train_mse": 0.2757927004028769,
           "val_mse": 0.33483582735061646
         },
         {
           "epoch": 12,
-          "train_mse": 0.2795070475515197,
-          "val_mse": 0.3574799597263336
+          "train_mse": 0.27950705237248363,
+          "val_mse": 0.3574800193309784
         },
         {
           "epoch": 13,
-          "train_mse": 0.26864515617489815,
-          "val_mse": 0.45835959911346436
+          "train_mse": 0.2686451557366287,
+          "val_mse": 0.4583596885204315
         },
         {
           "epoch": 14,
-          "train_mse": 0.26155077446909514,
+          "train_mse": 0.26155077841352015,
           "val_mse": 0.3466639816761017
         },
         {
           "epoch": 15,
-          "train_mse": 0.25389577930464463,
+          "train_mse": 0.2538957788663752,
           "val_mse": 0.3398805856704712
         },
         {
           "epoch": 16,
-          "train_mse": 0.26400448075112176,
-          "val_mse": 0.37836334109306335
+          "train_mse": 0.264004470232655,
+          "val_mse": 0.3783634305000305
         },
         {
           "epoch": 17,
-          "train_mse": 0.2700316020671059,
-          "val_mse": 0.3418949544429779
+          "train_mse": 0.27003159505479474,
+          "val_mse": 0.3418949246406555
         },
         {
           "epoch": 18,
-          "train_mse": 0.2444679544252508,
+          "train_mse": 0.2444679684498731,
           "val_mse": 0.3197576105594635
         },
         {
           "epoch": 19,
-          "train_mse": 0.23932157851317348,
-          "val_mse": 0.3580727279186249
+          "train_mse": 0.23932158355327213,
+          "val_mse": 0.35807281732559204
         },
         {
           "epoch": 20,
-          "train_mse": 0.24448551369063995,
-          "val_mse": 0.33335766196250916
+          "train_mse": 0.24448551544371774,
+          "val_mse": 0.33335772156715393
         },
         {
           "epoch": 21,
-          "train_mse": 0.2439606814261745,
+          "train_mse": 0.2439606831792523,
           "val_mse": 0.34700942039489746
         },
         {
           "epoch": 22,
-          "train_mse": 0.23584238067269325,
+          "train_mse": 0.2358423859319266,
           "val_mse": 0.3311435282230377
         },
         {
           "epoch": 23,
-          "train_mse": 0.24547572696910186,
+          "train_mse": 0.24547572718823657,
           "val_mse": 0.3472478985786438
         },
         {
           "epoch": 24,
-          "train_mse": 0.24165432900190353,
-          "val_mse": 0.39314499497413635
+          "train_mse": 0.24165432418093963,
+          "val_mse": 0.3931449055671692
         },
         {
           "epoch": 25,
-          "train_mse": 0.24398943979073973,
-          "val_mse": 0.3565671145915985
+          "train_mse": 0.24398944833699396,
+          "val_mse": 0.3565670847892761
         },
         {
           "epoch": 26,
-          "train_mse": 0.23719370003570528,
-          "val_mse": 0.3472591042518616
+          "train_mse": 0.23719370146008098,
+          "val_mse": 0.3472590744495392
         }
       ]
     }
@@ -1559,8 +1559,8 @@
       },
       "ridge_selected_alpha": 0.1,
       "transformer_seed_42": {
-        "rmse": 21.875084809423733,
-        "mae": 15.980719804047823
+        "rmse": 21.875084672445688,
+        "mae": 15.980719483292496
       },
       "transformer_best_epoch": 17
     },
@@ -1572,8 +1572,8 @@
       },
       "ridge_selected_alpha": 100.0,
       "transformer_seed_42": {
-        "rmse": 21.842532282803536,
-        "mae": 15.81420171583021
+        "rmse": 21.842531401205186,
+        "mae": 15.814201400802657
       },
       "transformer_best_epoch": 21
     },
@@ -1585,8 +1585,8 @@
       },
       "ridge_selected_alpha": 100.0,
       "transformer_seed_42": {
-        "rmse": 23.092019612421314,
-        "mae": 16.689263461230397
+        "rmse": 23.092019741840083,
+        "mae": 16.689263598696964
       },
       "transformer_best_epoch": 15
     }

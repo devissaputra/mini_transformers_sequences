@@ -11,7 +11,7 @@ Common validation target start: 1937-06; common test target start: 1970-10.
 | Horizon | Persistence MAE | Seasonal MAE | Ridge MAE | HGB MAE | Transformer MAE (seed 42) | Transformer repeated-seed mean ± SD |
 |---:|---:|---:|---:|---:|---:|---:|
 | 1 | 18.034 | 37.515 | 16.981 | 16.905 | 15.814 | 15.914 ± 0.086 |
-| 6 | 26.859 | 37.515 | 23.333 | 20.537 | 19.290 | 19.699 ± 0.595 |
+| 6 | 26.859 | 37.515 | 23.333 | 20.537 | 19.290 | 19.691 ± 0.582 |
 | 12 | 37.515 | 37.515 | 27.950 | 23.973 | 22.924 | 24.206 ± 2.965 |
 
 ## Validation-selected baseline settings
@@ -42,10 +42,10 @@ Negative mean deltas favor the Transformer; the seed-count column shows how ofte
 | 1 | seasonal_naive | -21.601 | 0.086 | 3/3 |
 | 1 | ridge | -1.067 | 0.086 | 3/3 |
 | 1 | hist_gradient_boosting | -0.992 | 0.086 | 3/3 |
-| 6 | persistence | -7.161 | 0.595 | 3/3 |
-| 6 | seasonal_naive | -17.816 | 0.595 | 3/3 |
-| 6 | ridge | -3.634 | 0.595 | 3/3 |
-| 6 | hist_gradient_boosting | -0.838 | 0.595 | 3/3 |
+| 6 | persistence | -7.168 | 0.582 | 3/3 |
+| 6 | seasonal_naive | -17.823 | 0.582 | 3/3 |
+| 6 | ridge | -3.641 | 0.582 | 3/3 |
+| 6 | hist_gradient_boosting | -0.846 | 0.582 | 3/3 |
 | 12 | persistence | -13.309 | 2.965 | 3/3 |
 | 12 | seasonal_naive | -13.309 | 2.965 | 3/3 |
 | 12 | ridge | -3.744 | 2.965 | 3/3 |
