@@ -43,3 +43,35 @@ This is not a physical model of the Sun and is not validated for operational spa
 - Clette, F., & Lefèvre, L. (2015). *SILSO Sunspot Number V2.0*. WDC SILSO, Royal Observatory of Belgium. DOI: 10.24414/qnza-ac80.
 - Clette, F., & Lefèvre, L. (2016). The New Sunspot Number: Assembling All Corrections. *Solar Physics*, 291, 2629–2651. DOI: 10.1007/s11207-016-1014-y.
 - Vaswani, A., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems*, 30.
+
+
+## Calculation definitions and evidence audit
+
+MAE = mean(|forecast - observed|); delta = Transformer MAE - baseline MAE.
+
+Negative paired MAE differences favor the Transformer. Twelve-month moving blocks retain some serial dependence. Later test predictions may use already observed test-era history; this is rolling-origin forecasting, not one fixed-origin recursive forecast.
+
+The Transformer has lower mean error than the simpler baselines at the 1- and 6-month horizons under the recorded protocol. The 12-month result is less stable: its three-seed mean MAE is 24.206, versus 23.973 for histogram gradient boosting, despite seed 42 favoring the Transformer. The seed-42 intervals against that baseline also cross zero at 6 and 12 months. This qualifies any broad claim that the Transformer is consistently superior.
+
+The [calculation guide](../CALCULATIONS.md) provides exact evidence paths and a function-level implementation map.
+
+![Study design](../assets/review_overview.svg)
+
+![Calculation and selected evidence](../assets/review_calculations.svg)
+
+### Selected evidence and interpretation
+
+| Quantity | Value | Unit / meaning | JSON path |
+|---|---:|---|---|
+| 1 month Transformer mean | 15.913768871410474 | sunspot MAE ↓ | `horizons.1.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 1 month HGB | 16.90527831823438 | sunspot MAE ↓ | `horizons.1.metrics.hist_gradient_boosting.mae` |
+| 6 month Transformer mean | 19.69880894688634 | sunspot MAE ↓ | `horizons.6.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 6 month HGB | 20.537293415179263 | sunspot MAE ↓ | `horizons.6.metrics.hist_gradient_boosting.mae` |
+| 12 month Transformer mean | 24.206205192390268 | sunspot MAE ↓ | `horizons.12.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 12 month HGB | 23.97272047251438 | sunspot MAE ↓ | `horizons.12.metrics.hist_gradient_boosting.mae` |
+
+These values are read from `results/metrics.json`. They must be interpreted with the split, data status and limitations above. The complete data/model experiment was not rerun in this review. Stored empirical results were inspected, not independently reproduced from raw data.
+
+### Reproduction and claim boundaries
+
+The existing suite requires unavailable dependencies; no full-suite pass is claimed. The figure generator can be checked with `python scripts/build_review_figures.py --check`. This verifies the displayed calculation evidence, not an independent replication of the complete scientific experiment. The manuscript is a working report, not a peer-reviewed publication.

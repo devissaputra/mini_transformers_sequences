@@ -1,0 +1,80 @@
+{
+  "question": "Does a small Transformer justify its complexity?",
+  "data": "WDC-SILSO monthly sunspots, January 1749 to March 2026: 3,327 definitive observations.",
+  "method": "Common chronological target dates; validation-selected baselines; 1-, 6- and 12-month direct forecasts; three Transformer seeds.",
+  "formula": "MAE = mean(|forecast - observed|); delta = Transformer MAE - baseline MAE.",
+  "interpretation": "Negative paired MAE differences favor the Transformer. Twelve-month moving blocks retain some serial dependence. Later test predictions may use already observed test-era history; this is rolling-origin forecasting, not one fixed-origin recursive forecast.",
+  "status": "RECORDED EXTERNAL-DATA STUDY | full experiment not rerun in this review",
+  "source": "results/metrics.json",
+  "rows": [
+    {
+      "label": "1 month Transformer mean",
+      "path": [
+        "horizons",
+        "1",
+        "metrics",
+        "transformer_repeated_seed_summary",
+        "mae_mean"
+      ],
+      "unit": "sunspot MAE ↓"
+    },
+    {
+      "label": "1 month HGB",
+      "path": [
+        "horizons",
+        "1",
+        "metrics",
+        "hist_gradient_boosting",
+        "mae"
+      ],
+      "unit": "sunspot MAE ↓"
+    },
+    {
+      "label": "6 month Transformer mean",
+      "path": [
+        "horizons",
+        "6",
+        "metrics",
+        "transformer_repeated_seed_summary",
+        "mae_mean"
+      ],
+      "unit": "sunspot MAE ↓"
+    },
+    {
+      "label": "6 month HGB",
+      "path": [
+        "horizons",
+        "6",
+        "metrics",
+        "hist_gradient_boosting",
+        "mae"
+      ],
+      "unit": "sunspot MAE ↓"
+    },
+    {
+      "label": "12 month Transformer mean",
+      "path": [
+        "horizons",
+        "12",
+        "metrics",
+        "transformer_repeated_seed_summary",
+        "mae_mean"
+      ],
+      "unit": "sunspot MAE ↓"
+    },
+    {
+      "label": "12 month HGB",
+      "path": [
+        "horizons",
+        "12",
+        "metrics",
+        "hist_gradient_boosting",
+        "mae"
+      ],
+      "unit": "sunspot MAE ↓"
+    }
+  ],
+  "table_title": "Selected recorded values (units and context shown)",
+  "evidence_note": "Selected committed results; source values were not independently retrained in this review.",
+  "finding": "The Transformer has lower mean error than the simpler baselines at the 1- and 6-month horizons under the recorded protocol. The 12-month result is less stable: its three-seed mean MAE is 24.206, versus 23.973 for histogram gradient boosting, despite seed 42 favoring the Transformer. The seed-42 intervals against that baseline also cross zero at 6 and 12 months. This qualifies any broad claim that the Transformer is consistently superior."
+}

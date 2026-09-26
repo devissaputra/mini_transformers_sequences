@@ -43,4 +43,10 @@ The executable study is \texttt{src/run\_experiment.py}. Generated evidence is w
 
 \bibliographystyle{plain}
 \bibliography{references}
+\section{Calculation audit and reproduction scope}
+The Transformer has lower mean error than the simpler baselines at the 1- and 6-month horizons under the recorded protocol. The 12-month result is less stable: its three-seed mean MAE is 24.206, versus 23.973 for histogram gradient boosting, despite seed 42 favoring the Transformer. The seed-42 intervals against that baseline also cross zero at 6 and 12 months. This qualifies any broad claim that the Transformer is consistently superior.
+
+Negative paired MAE differences favor the Transformer. Twelve-month moving blocks retain some serial dependence. Later test predictions may use already observed test-era history; this is rolling-origin forecasting, not one fixed-origin recursive forecast.
+
+See the repository calculation guide for exact source paths. The full experiment was not independently rerun during this documentation review.
 \end{document}

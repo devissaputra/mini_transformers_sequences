@@ -1,3 +1,7 @@
+# Calculation reading guide: ../CALCULATIONS.md (repository root).
+# MAE = mean(|forecast - observed|); delta = Transformer MAE - baseline MAE.
+# Negative paired MAE differences favor the Transformer. Twelve-month moving blocks retain some serial dependence. Later test predictions may use already observed test-era history; this is rolling-origin forecasting, not one fixed-origin recursive forecast.
+
 from __future__ import annotations
 
 import argparse
