@@ -63,11 +63,11 @@ The [calculation guide](../CALCULATIONS.md) provides exact evidence paths and a 
 
 | Quantity | Value | Unit / meaning | JSON path |
 |---|---:|---|---|
-| 1 month Transformer mean | 15.913768871410474 | sunspot MAE ↓ | `horizons.1.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 1 month Transformer mean | 15.913768627025462 | sunspot MAE ↓ | `horizons.1.metrics.transformer_repeated_seed_summary.mae_mean` |
 | 1 month HGB | 16.90527831823438 | sunspot MAE ↓ | `horizons.1.metrics.hist_gradient_boosting.mae` |
-| 6 month Transformer mean | 19.69880894688634 | sunspot MAE ↓ | `horizons.6.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 6 month Transformer mean | 19.691348204741605 | sunspot MAE ↓ | `horizons.6.metrics.transformer_repeated_seed_summary.mae_mean` |
 | 6 month HGB | 20.537293415179263 | sunspot MAE ↓ | `horizons.6.metrics.hist_gradient_boosting.mae` |
-| 12 month Transformer mean | 24.206205192390268 | sunspot MAE ↓ | `horizons.12.metrics.transformer_repeated_seed_summary.mae_mean` |
+| 12 month Transformer mean | 24.2062053814068 | sunspot MAE ↓ | `horizons.12.metrics.transformer_repeated_seed_summary.mae_mean` |
 | 12 month HGB | 23.97272047251438 | sunspot MAE ↓ | `horizons.12.metrics.hist_gradient_boosting.mae` |
 
 These values are read from `results/metrics.json`. They must be interpreted with the split, data status and limitations above. The complete data/model experiment was not rerun in this review. Stored empirical results were inspected, not independently reproduced from raw data.
