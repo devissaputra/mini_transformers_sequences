@@ -129,7 +129,7 @@ Repository source code is released under the MIT License. The WDC-SILSO source d
 The strict-QA empirical rerun uses the frozen SILSO study input and the final all-seed comparison protocol.
 
 - At 1 month, the Transformer beats HGB on MAE for all 3/3 seeds; mean Transformer-minus-HGB MAE delta = -0.992.
-- At 6 months, the Transformer beats HGB on MAE for all 3/3 seeds; mean delta = -0.838.
+- At 6 months, the Transformer beats HGB on MAE for all 3/3 seeds; mean delta = -0.846.
 - At 12 months, the conclusion is seed-sensitive: 2/3 seeds beat HGB, while the across-seed mean delta is +0.233 MAE, slightly favoring HGB on average.
 - The 12-month seed-42 comparison alone is therefore not treated as evidence of general Transformer superiority.
 
